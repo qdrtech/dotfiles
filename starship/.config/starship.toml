@@ -16,6 +16,7 @@ $aws\
 $docker_context\
 $jobs\
 $cmd_duration\
+$time\
 $line_break\
 $character"""
 
@@ -107,6 +108,12 @@ format = '[$symbol]($style)'
 min_time = 500
 style = 'fg:gray'
 format = '[$duration]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#1d2230"
+format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
 
 [palettes.nord]
 dark_blue = '#5E81AC'
