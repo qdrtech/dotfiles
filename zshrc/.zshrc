@@ -13,6 +13,7 @@ zstyle :compinstall filename '/home/qdrtech/.zshrc'
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+alias gitprune='sh ~/.config/scripts/git-prune.sh'
 PS1='%n@%m %~$'
 
 autoload -Uz compinit
