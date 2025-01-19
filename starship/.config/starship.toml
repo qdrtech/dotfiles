@@ -1,24 +1,7 @@
 format = """
-$username\
-$directory\
-$git_branch\
-$git_status\
-$fill\
-$python\
-$lua\
-$nodejs\
-$golang\
-$haskell\
-$rust\
-$ruby\
-$package\
-$aws\
-$docker_context\
-$jobs\
-$cmd_duration\
-$time\
-$line_break\
-$character"""
+$username(white)$directory$git_branch$git_status$fill$python$lua$nodejs$golang$package$aws$docker_context$jobs$time$cmd_duration$line_break
+[╰─](white)$character 
+"""
 
 add_newline = true
 palette = 'nord'
@@ -29,11 +12,12 @@ style_root = 'bold fg:red'
 style_user = 'bold fg:yellow'
 
 [directory]
+read_only = "🔒"
 style = 'bold fg:dark_blue'
 format = '[$path ]($style)'
 truncation_length = 3
-truncation_symbol = '…/'
-truncate_to_repo = false
+truncation_symbol = ''
+truncate_to_repo = true
 
 [directory.substitutions]
 'Documents' = '󰈙'
@@ -42,9 +26,11 @@ truncate_to_repo = false
 'Pictures' = ' '
 
 [git_branch]
-style = 'fg:green'
+style = 'fg:red'
 symbol = ' '
 format = '[on](white) [$symbol$branch ]($style)'
+
+[git_state]
 
 [git_status]
 style = 'fg:green'
@@ -52,6 +38,9 @@ format = '([$all_status$ahead_behind]($style) )'
 
 [fill]
 symbol = ' '
+
+[package]
+format = "via [🎁 $version](208 bold) "
 
 [python]
 style = 'teal'
@@ -66,6 +55,12 @@ symbol = ' '
 [nodejs]
 style = 'blue'
 symbol = ' '
+format = 'via [$symbol($version )]($style)'
+
+[bun]
+symbol = '🍔 '
+style = 'green'
+format = 'via [$style]($style) '
 
 [golang]
 style = 'blue'
@@ -83,9 +78,6 @@ symbol = ' '
 style = 'blue'
 symbol = ' '
 
-[package]
-symbol = '󰏗 '
-
 [aws]
 symbol = ' '
 style = 'yellow'
@@ -99,21 +91,27 @@ detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
 detect_extensions = ['Dockerfile']
 
 [jobs]
-symbol = ' '
+symbol = '✦'
 style = 'red'
 number_threshold = 1
 format = '[$symbol]($style)'
 
+[character]
+format = "$symbol"
+success_symbol = "[❯](bold green)"
+error_symbol = "[✗](bold red) "
+vicmd_symbol = "[❮](bold green)"
+disabled = false
+
 [cmd_duration]
-min_time = 500
-style = 'fg:gray'
-format = '[$duration]($style)'
+show_milliseconds = false
+style = "bold yellow"
+format = "took [$duration]($style)"
 
 [time]
 disabled = false
 time_format = "%R" # Hour:Minute Format
-style = "bg:#1d2230"
-format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+format = '[  $time ]($style)'
 
 [palettes.nord]
 dark_blue = '#5E81AC'
