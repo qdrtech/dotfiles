@@ -23,3 +23,10 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/home/qdrtech/.bun/_bun" ] && source "/home/qdrtech/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
