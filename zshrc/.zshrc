@@ -34,3 +34,10 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export FZF_DEFAULT_COMMAND='fd'
+export PATH=$PATH:$HOME/.config/scripts
+
+export PATH="${PATH}:${HOME}/.local/bin/"
+
+# Import colorscheme from 'wal'
+(wal -r &)
