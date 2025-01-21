@@ -40,4 +40,4 @@ export PATH=$PATH:$HOME/.config/scripts
 export PATH="${PATH}:${HOME}/.local/bin/"
 
 # Import colorscheme from 'wal'
-(wal -r &)
+(cat $HOME/.cache/wal/sequences)
