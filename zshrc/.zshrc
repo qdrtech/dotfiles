@@ -7,6 +7,8 @@ SAVEHIST=1000
 
 bindkey -e
 
+sh ~/.config/scripts/term-startup.sh
+
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/qdrtech/.zshrc'

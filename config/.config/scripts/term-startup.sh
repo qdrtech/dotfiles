@@ -1,0 +1,3 @@
+figlet qdrtech
+neofetch
+
