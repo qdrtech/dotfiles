@@ -1,11 +1,37 @@
+#
+#
+#   _____ _               _   _         
+#  / ____| |             | | | |        
+# | |  __| |__   ___  ___| |_| |_ _   _ 
+# | | |_ | '_ \ / _ \/ __| __| __| | | |
+# | |__| | | | | (_) \__ \ |_| |_| |_| |
+#  \_____|_| |_|\___/|___/\__|\__|\__, |
+#                                  __/ |
+#                                 |___/ 
+#
+
+# Configuration file for a graphical user interface (GUI) theme and appearance settings.
+
+# Set the theme to 'tokyonight_night'.
+# This theme is likely a dark theme with a Tokyo Night color scheme.
 theme = tokyonight_night
 
+# Define the font family and size for the interface.
+# '0xProto Nerd Font' is a monospaced font with additional glyphs for developers.
+# The font size is set to 14 pixels.
 font-family = 0xProto Nerd Font
 font-size = 14
 
+# Set the horizontal padding for the window.
+# The values represent the left and right padding in pixels.
 window-padding-x = 10,10
 
+# Configure the background blur and opacity for transparent windows.
+# 'background-blur-radius' sets the blur intensity to 20 pixels.
+# 'background-opacity' sets the transparency level to 80% (0.8).
 background-blur-radius = 20
 background-opacity = 0.8
 
+# Enable GTK title bar for the window.
+# This setting ensures that the window uses the GTK-style title bar.
 gtk-titlebar = true
