@@ -41,6 +41,8 @@ export FZF_DEFAULT_COMMAND='fd'
 export PATH=$PATH:$HOME/.config/scripts
 
 export PATH="${PATH}:${HOME}/.local/bin/"
+export FLYCTL_INSTALL="/home/qdrtech/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # Import colorscheme from 'wal'
 (cat $HOME/.cache/wal/sequences)
