@@ -46,3 +46,11 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # Import colorscheme from 'wal'
 (cat $HOME/.cache/wal/sequences)
+
+# pnpm
+export PNPM_HOME="/home/qdrtech/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
