@@ -35,3 +35,5 @@ background-opacity = 0.8
 # Enable GTK title bar for the window.
 # This setting ensures that the window uses the GTK-style title bar.
 gtk-titlebar = true
+
+shell-integration-features = sudo
