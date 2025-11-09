@@ -17,10 +17,14 @@
 theme = tokyonight_night
 
 # Define the font family and size for the interface.
-# '0xProto Nerd Font' is a monospaced font with additional glyphs for developers.
+# '.SF NS Mono' is the macOS system monospaced font.
 # The font size is set to 14 pixels.
-font-family = 0xProto Nerd Font
+font-family = .SF NS Mono
 font-size = 14
+
+# Enable font features for better rendering
+font-feature = +calt
+font-feature = +liga
 
 # Set the horizontal padding for the window.
 # The values represent the left and right padding in pixels.
