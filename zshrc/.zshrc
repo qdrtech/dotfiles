@@ -69,3 +69,6 @@ alias .......="cd ../../../../../.."
 alias ........="cd ../../../../../../.."
 alias .........="cd ../../../../../../../.."
 
+
+# opencode
+export PATH=/home/qdrtech/.opencode/bin:$PATH
