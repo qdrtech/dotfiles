@@ -103,6 +103,9 @@ set_theme() {
     # Validate theme
     validate_theme "$theme_name"
 
+    # Setup base configurations (if not already done)
+    setup_base_configs
+
     # Update symlink
     ln -sfn "$theme_path" "$CURRENT_LINK"
     success "Updated theme symlink"
@@ -131,22 +134,53 @@ set_theme() {
 }
 
 # ==============================================================================
+# BASE CONFIGURATION FUNCTIONS
+# ==============================================================================
+
+setup_base_configs() {
+    log "Setting up base configurations..."
+
+    # Link waybar config to base
+    local waybar_config="$HOME/.config/waybar/config"
+    local base_waybar_config="$HOME/.config/base/waybar/config"
+
+    if [ -f "$base_waybar_config" ]; then
+        mkdir -p "$(dirname "$waybar_config")"
+        if [ ! -L "$waybar_config" ]; then
+            # Backup existing config
+            if [ -f "$waybar_config" ]; then
+                mv "$waybar_config" "$waybar_config.backup-$(date +%Y%m%d-%H%M%S)"
+            fi
+            ln -sf "$base_waybar_config" "$waybar_config"
+            log "Linked waybar config to base"
+        fi
+    fi
+
+    log "Base configurations ready"
+}
+
+# ==============================================================================
 # COMPONENT APPLICATION FUNCTIONS
 # ==============================================================================
 
 apply_hyprland() {
     local theme_path="$1"
-    local theme_file="$theme_path/hyprland.conf"
+    local theme_file="$theme_path/hyprland-style.conf"
 
+    # Try new layered system first (hyprland-style.conf)
     if [ ! -f "$theme_file" ]; then
-        log "Warning: Hyprland theme file not found, skipping"
-        return
+        # Fall back to old system (hyprland.conf) for backward compatibility
+        theme_file="$theme_path/hyprland.conf"
+        if [ ! -f "$theme_file" ]; then
+            log "Warning: Hyprland theme file not found (tried hyprland-style.conf and hyprland.conf), skipping"
+            return
+        fi
     fi
 
     # Ensure config directory exists
     mkdir -p "$(dirname "$HYPRLAND_CONFIG")"
 
-    # Copy theme file
+    # Copy theme style file
     cp "$theme_file" "$HYPRLAND_CONFIG"
 
     # Reload Hyprland
@@ -154,7 +188,7 @@ apply_hyprland() {
         hyprctl reload &> /dev/null || log "Warning: Could not reload Hyprland"
     fi
 
-    log "Applied Hyprland theme"
+    log "Applied Hyprland theme (layered system)"
 }
 
 apply_waybar() {
