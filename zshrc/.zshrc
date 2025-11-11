@@ -18,6 +18,7 @@ alias grep='grep --color=auto'
 alias gitprune='sh ~/.config/scripts/git-prune.sh'
 alias dle='sh ~/.config/scripts/docker-login-ecr.sh'
 PS1='%n@%m %~$'
+alias ts='sh ~/.config/scripts/theme-switch.sh'
 
 autoload -Uz compinit
 compinit

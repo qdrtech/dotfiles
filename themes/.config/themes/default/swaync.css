@@ -1,0 +1,105 @@
+/* macOS Dark Theme - SwayNC Stylesheet
+ * Version: 1.0
+ * This file will be expanded in Phase 3
+ */
+
+/* ==============================================================================
+ * GLOBAL
+ * ============================================================================*/
+
+* {
+    font-family: "SF Pro Text", -apple-system, sans-serif;
+    font-size: 13px;
+}
+
+/* ==============================================================================
+ * NOTIFICATION
+ * ============================================================================*/
+
+.notification {
+    background: rgba(40, 40, 40, 0.8);
+    backdrop-filter: blur(25px);
+    border: 1px solid #3C3C3C;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.notification-default-action {
+    background: transparent;
+}
+
+.notification-default-action:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ==============================================================================
+ * NOTIFICATION TITLE & BODY
+ * ============================================================================*/
+
+.summary {
+    font-family: "SF Pro Display", -apple-system, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.87);
+    margin-bottom: 4px;
+}
+
+.body {
+    font-size: 13px;
+    color: rgba(160, 160, 160, 0.55);
+    line-height: 1.5;
+}
+
+/* ==============================================================================
+ * URGENCY LEVELS
+ * ============================================================================*/
+
+.notification.low {
+    border-left: 3px solid #6E6E6E;
+}
+
+.notification.normal {
+    border-left: 3px solid #0A84FF;
+}
+
+.notification.critical {
+    border-left: 3px solid #FF453A;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* ==============================================================================
+ * CONTROL CENTER
+ * ============================================================================*/
+
+.control-center {
+    background: rgba(40, 40, 40, 0.75);
+    backdrop-filter: blur(30px);
+    border: 1px solid #3C3C3C;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+/* ==============================================================================
+ * CLOSE BUTTON
+ * ============================================================================*/
+
+.close-button {
+    background: transparent;
+    border-radius: 50%;
+    padding: 4px;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
