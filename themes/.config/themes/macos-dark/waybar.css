@@ -16,7 +16,6 @@
 
 window#waybar {
     background: rgba(40, 40, 40, 0.7);
-    backdrop-filter: blur(20px);
     color: rgba(255, 255, 255, 0.87);
     border-bottom: 1px solid #414141;
 }
