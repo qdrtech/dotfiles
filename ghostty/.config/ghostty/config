@@ -14,7 +14,7 @@
 
 # Set the theme to 'tokyonight_night'.
 # This theme is likely a dark theme with a Tokyo Night color scheme.
-theme = tokyonight_night
+# theme = tokyonight_night
 
 # Define the font family and size for the interface.
 # '.SF NS Mono' is the macOS system monospaced font.
