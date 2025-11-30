@@ -1,3 +1,2 @@
 figlet qdrtech
-neofetch
-
+fastfetch
