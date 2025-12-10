@@ -1,0 +1,31 @@
+@import url("theme-colors.css");
+
+/* Base Waybar styling that consumes the generated theme variables. */
+* {
+  font-family: "JetBrainsMono Nerd Font", "SF Pro Display", sans-serif;
+  font-size: 11pt;
+}
+
+window#waybar {
+  background: var(--bg);
+  color: var(--text);
+}
+
+#workspaces button {
+  color: var(--text);
+  padding: 0 8px;
+}
+
+#workspaces button.focused {
+  background: var(--accent);
+  color: #0b1221;
+  border-radius: 6px;
+}
+
+#clock,
+#battery,
+#network,
+#cpu,
+#memory {
+  padding: 0 10px;
+}

@@ -1,47 +1,12 @@
-/*
-#  ____        __ _  
-# |  _ \ ___  / _(_) 
-# | |_) / _ \| |_| | 
-# |  _ < (_) |  _| | 
-# |_| \_\___/|_| |_| 
-#                    
-# by Stephan Raabe (2023) 
-# ----------------------------------------------------- 
-*/
-
-/* ---- Configuration ---- */
+/* Minimal Rofi config that pulls palette from theme-colors.rasi via theme.rasi */
 configuration {
-    modi:                       "drun,filebrowser,window,run";
-    font:                       "Fira Sans 11";
-    show-icons:                 true;
-    icon-theme:                 "kora";
-    display-drun:                " ";
-    display-run:                 " ";
-    display-filebrowser:         "  ";
-    display-window:              "  ";
-	drun-display-format:        "{name}";
-    hover-select:               false;
-    scroll-method:              1;
-    me-select-entry:            "";
-    me-accept-entry:            "MousePrimary";
-    window-format:              "{w} · {c} · {t}";
-    
+    modi: "drun,run";
+    show-icons: true;
+    font: "JetBrainsMono Nerd Font 11";
+    drun-display-format: "{name}";
 }
 
-/* ---- Load font ---- */
-@import "~/.config/settings/rofi-font.rasi"
-
-/* ---- Load pywal colors (custom wal template) ---- */
-@theme "~/.cache/wal/colors-rofi-pywal"
-
-/* ---- Load wallpaper ---- */
-@import "~/.config/cache/current_wallpaper.rasi"
-
-/* ---- Load border width ---- */
-@import "~/.config/settings/rofi-border.rasi"
-
-/* ---- Load border radius ---- */
-@import "~/.config/settings/rofi-border-radius.rasi"
+@theme "/home/qdrtech/.config/rofi/generated-theme.rasi"
 
 // Main //
 window {
