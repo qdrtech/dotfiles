@@ -6,8 +6,8 @@
 }
 
 window#waybar {
-  background: var(--bg);
-  color: var(--text);
+  background: @bg;
+  color: @text;
 }
 
 .modules-left,
@@ -16,13 +16,13 @@ window#waybar {
   padding: 10px;
   margin: 10px;
   border-radius: 8px;
-  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  background: alpha(@surface, 0.85);
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35);
 }
 
 tooltip {
-  background: var(--surface);
-  color: var(--text);
+  background: @surface;
+  color: @text;
 }
 
 #clock:hover,
