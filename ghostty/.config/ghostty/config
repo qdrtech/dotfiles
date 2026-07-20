@@ -32,9 +32,9 @@ window-padding-x = 10,10
 
 # Configure the background blur and opacity for transparent windows.
 # 'background-blur-radius' sets the blur intensity to 20 pixels.
-# 'background-opacity' sets the transparency level to 80% (0.8).
+# 'background-opacity' sets the window background to 20% opaque (0.2).
 background-blur-radius = 20
-background-opacity = 0.8
+background-opacity = 0.2
 
 # Enable GTK title bar for the window.
 # This setting ensures that the window uses the GTK-style title bar.
