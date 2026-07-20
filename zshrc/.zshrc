@@ -45,8 +45,12 @@ export PATH="${PATH}:${HOME}/.local/bin/"
 export FLYCTL_INSTALL="/home/qdrtech/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
-# Import colorscheme from 'wal'
-(cat $HOME/.cache/wal/sequences)
+# Import colorscheme from 'wal', minus the background/highlight-background
+# sequences (OSC 11/17/19/708). Those set an opaque background at runtime and
+# override ghostty's background-opacity, killing terminal transparency.
+if [[ -f $HOME/.cache/wal/sequences ]]; then
+  sed -E 's/\x1b\](11|17|19|708);[^\x1b]*\x1b\\//g' "$HOME/.cache/wal/sequences"
+fi
 
 # pnpm
 export PNPM_HOME="/home/qdrtech/.local/share/pnpm"
