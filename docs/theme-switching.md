@@ -134,6 +134,14 @@ component symlinks or copies the theme's own file:
    step logs a warning and skips.
 5. `themes/.config/themes/README.md` documents this switcher. It contradicts this
    file wherever the two disagree; this file is the accurate one.
+6. **It reintroduces absolute symlink targets.** `THEMES_DIR` (`:14`),
+   `ROFI_THEME` (`:22`) and `SWAYNC_STYLE` (`:23`) are built from `$HOME`, so the
+   `ln -sf` calls at `:233` and `:251` write `$HOME/.config/themes/<theme>/...`
+   over `rofi/.config/rofi/theme.rasi` and `swaync/.config/swaync/style.css`.
+   Under folded stow both destinations land in the repo, so one run replaces
+   those two committed symlinks — made repo-relative so they resolve for any
+   user — with absolute `/home/<user>/...` targets and leaves the tree dirty.
+   This is one alias away: `ts` (`zshrc/.zshrc:21`).
 
 ## Leftovers on the reference machine
 
