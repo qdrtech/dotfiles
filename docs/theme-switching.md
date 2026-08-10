@@ -1,30 +1,87 @@
 # Theme switching
 
-**Status: broken and half-migrated. Read this before running either switcher.**
+There is one theme switcher: `scripts/theme-switch.sh`, aliased to `ts`
+(`zshrc/.zshrc:21`). It is palette-first — a theme is ten colour variables, and
+the switcher generates every per-application colour file from them.
 
-There are two theme switchers in this repo. They use incompatible theme formats
-and write to different places. Neither one applies a theme correctly against the
-themes that are actually committed here. This document describes what is true
-today, not what was intended.
+The older file-first switcher (`config/.config/scripts/theme-switch.sh`), which
+symlinked whole per-component files into place, has been removed. Its SwayNC and
+Starship coverage was carried over.
 
-## The two switchers
+## Applying this change on a machine that already had the old switcher
 
-| | `scripts/theme-switch.sh` | `config/.config/scripts/theme-switch.sh` |
-| --- | --- | --- |
-| Style | palette-first: generates colour files from ~10 variables | file-first: symlinks or copies whole per-component files |
-| Theme format | `BG`, `SURFACE`, `TEXT`, `ACCENT`, … | `THEME_BG_WINDOW`, `THEME_ACCENT_BLUE`, … |
-| Covers | Hyprland, Waybar, Rofi, Ghostty | Hyprland, Waybar, Rofi, Ghostty, SwayNC, Starship |
-| Reached via | run from the repo | the `ts` alias (`zshrc/.zshrc:21`) |
-| Themes dir | `$DOTFILES_ROOT/themes` | `~/.config/themes` |
+Four things go unstyled the moment the change lands, and stay that way until the
+switcher is run once:
 
-The committed themes in `themes/.config/themes/` are all in the **second**
-format, and so is the one design spec that names variables at all
-(`docs/macos-theme-spec.md:659,1019`). The top-level `README` describes neither
-format in detail — it notes that both switchers exist and defers here.
+- `~/.config/rofi/theme-colors.rasi` and `generated-theme.rasi` are deleted, so
+  `config.rasi:9` has no theme to load.
+- `~/.config/swaync/style.css` stops being a per-theme symlink and becomes a
+  real file whose first line is `@import url("theme-colors.css")` — a file that
+  has never existed here. SwayNC comes up unstyled.
+- `~/.config/starship.toml` pointed into the deleted `default` theme, so it
+  dangles and Starship falls back to its built-in prompt.
+- `~/.config/ghostty/theme.conf` is deleted. Nothing `include`s it, so nothing
+  changes visibly.
 
-## What actually happens
+**Do not run `ts` in a shell you already had open.** `ts` is a zsh alias, fixed
+at shell start; a shell that predates the change still holds the old
+`sh ~/.config/scripts/theme-switch.sh`, and `~/.config/scripts` is a symlink
+into this repo, where that script no longer exists. `ts set macos-dark` there
+fails with *no such file*, in exactly the window where rofi, SwayNC and Starship
+are unstyled. Reload the alias first:
 
-### `scripts/theme-switch.sh` — palette-first
+```sh
+exec zsh && ts set macos-dark
+```
+
+or skip the alias entirely:
+
+```sh
+bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" set macos-dark
+```
+
+Hyprland and Waybar read untracked files in real `~/.config` directories that
+this change never touches, so the bar and the window borders stay themed
+throughout.
+
+## A theme is ten variables
+
+`themes/.config/themes/<name>/colors.conf`:
+
+```sh
+BG="#0f1115"
+SURFACE="#1c1f26"
+SURFACE_ALT="#0f1115"   # optional, defaults to SURFACE
+TEXT="#e8e8ed"
+TEXT_MUTED="#a1a1aa"
+ACCENT="#0a84ff"
+ACCENT_ALT="#64d2ff"    # optional, defaults to ACCENT
+WARN="#ffc934"
+ERROR="#ff453a"
+SUCCESS="#34c759"
+```
+
+Nothing else in a theme directory is read. Values must be `#RRGGBB`: Waybar,
+Rofi, SwayNC, Ghostty and Starship interpolate them verbatim, and the Hyprland
+`0xffRRGGBB` form is produced by `hex_with_alpha` in the script — so a palette
+file must never contain a `0x` value.
+
+Shipped themes: `macos-dark`, `tokyonight`.
+
+`macos-dark` is the reference machine's live palette, recovered from
+`ea8edf1:themes/macos-dark/colors.conf`. That file was deleted by `7658a3b`
+(2026-05-07), which is what broke theming: no committed theme was left in the
+format the switcher reads, so every theme fell through to the script's hardcoded
+Catppuccin defaults and rendered identically. Applying `macos-dark` reproduces
+`~/.config/hypr/theme-colors.conf`, `~/.config/waybar/theme-colors.css` and
+`~/.config/ghostty/theme.conf` byte for byte.
+
+A third theme, `default`, was deleted. Its colour values were byte-identical to
+`tokyonight`'s, its component files were copies of `macos-dark`'s, and its
+waybar stylesheet was pywal-driven — three mutually exclusive identities and
+nothing in the repo to arbitrate between them. See issue #43.
+
+## Usage
 
 ```
 Usage: theme-switch.sh <command> [args]
@@ -36,162 +93,116 @@ Commands:
   help                     Show this help message
 
 Environment overrides:
-  THEMES_DIR           Path to themes directory (default: repo/themes)
+  THEMES_DIR           Path to themes directory (default: repo/themes/.config/themes)
 ```
 
-Writes:
+`NO_HYPR_RELOAD=1` also suppresses the Hyprland reload.
+
+## What `set` writes
+
+Bookkeeping:
 
 - `~/.config/themes/current` — symlink to the chosen theme directory
 - `~/.config/themes/colors.conf` — symlink to the active palette
 - `~/.config/themes/current.txt` — the active theme name
-- `~/.config/hypr/theme-colors.conf`
-- `~/.config/waybar/theme-colors.css`
-- `~/.config/rofi/theme-colors.rasi` and `~/.config/rofi/generated-theme.rasi`
-- `~/.config/ghostty/theme.conf`
 
-Expected palette format — a `colors.conf` of plain shell assignments:
+Generated colour files:
 
-```sh
-BG="#1e1e2e"
-SURFACE="#313244"
-SURFACE_ALT="#313244"   # optional, defaults to SURFACE
-TEXT="#cdd6f4"
-TEXT_MUTED="#a6adc8"
-ACCENT="#89b4fa"
-ACCENT_ALT="#89dceb"    # optional, defaults to ACCENT
-WARN="#f9e2af"
-ERROR="#f38ba8"
-SUCCESS="#a6e3a1"
+| File | Consumed by |
+| --- | --- |
+| `~/.config/hypr/theme-colors.conf` | `hyprland.conf:22` sources it; `conf/theme.conf` uses `$bg $surface $surface_alt $fg $fg_muted $accent $accent_alt $warn $error $success` |
+| `~/.config/waybar/theme-colors.css` | `waybar/style.css:1` `@import url("theme-colors.css")` |
+| `~/.config/rofi/theme-colors.rasi` | imported by `generated-theme.rasi` |
+| `~/.config/rofi/generated-theme.rasi` | `rofi/config.rasi:9` `@theme "generated-theme.rasi"` |
+| `~/.config/swaync/theme-colors.css` | `swaync/style.css:1` `@import url("theme-colors.css")` |
+| `~/.config/ghostty/theme.conf` | nothing — `ghostty/config` does not `include` it |
+| `~/.config/starship.toml` | `starship init zsh` (`zshrc/.zshrc:29`) |
+
+After a successful `set`, Hyprland is reloaded via `hyprctl reload` and SwayNC
+via `swaync-client --reload-config --reload-css`, unless `--no-reload` is given.
+Waybar is not restarted; restart it by hand or with
+`waybar/.config/waybar/scripts/`.
+
+### Starship
+
+The old switcher symlinked each theme's own `starship.toml`. The replacement
+generates `~/.config/starship.toml` instead: the prompt layout is fixed in the
+script and only the `[palettes.theme]` block changes per theme. If a
+non-generated `starship.toml` is found, it is copied to
+`starship.toml.backup-<timestamp>` before the first overwrite.
+
+## Generated files are not tracked
+
+`~/.config/ghostty`, `~/.config/rofi` and `~/.config/swaync` are folded stow
+symlinks into this repo, so the switcher writes its output straight into the
+working tree. Those four paths are listed in `.gitignore`:
+
+```
+ghostty/.config/ghostty/theme.conf
+rofi/.config/rofi/theme-colors.rasi
+rofi/.config/rofi/generated-theme.rasi
+swaync/.config/swaync/theme-colors.css
 ```
 
-**Confirmed defects:**
+The consequence on a fresh clone is that they do not exist until `ts set <name>`
+is run once. Rofi in particular falls back to its built-in theme until then —
+see [installation.md](installation.md).
 
-1. **`list` prints nothing.** It scans `$DOTFILES_ROOT/themes`, but the themes
-   are two levels deeper at `themes/.config/themes/`, and the `! -name '.*'`
-   filter excludes the `.config` directory on the way. Workaround:
-   `THEMES_DIR=themes/.config/themes ./scripts/theme-switch.sh list`.
+## Rofi output format
 
-2. **No committed theme is in the palette format.** Every `colors.conf` under
-   `themes/.config/themes/` uses `THEME_*` names. Sourcing one sets none of
-   `BG`/`SURFACE`/`TEXT`/`ACCENT`, so `load_palette` falls through to its
-   hardcoded Catppuccin defaults. The consequence is that `set default` and
-   `set macos-dark` produce **byte-identical output** — the theme argument has
-   no effect.
+Rofi 2.0.0 rejects two things the switcher used to emit:
 
-3. **Running it would change the live colours.** The generated files currently on
-   the reference machine hold a dark macOS-ish palette (`#0f1115`, `#0a84ff`)
-   that is not derivable from any `colors.conf` in this repo. The source palette
-   could not be located: `~/.config/themes/current` points at
-   `<clone>/themes/macos-dark`, and that path does not exist (the
-   committed theme lives at `themes/.config/themes/macos-dark`). Running `set`
-   today replaces those colours with the Catppuccin fallback.
+- the top-level `@name: value;` declaration form, and
+- underscores in property names (`surface_alt`, `fg_muted`, `accent_alt`).
 
-4. **`write_atomic` fails on a fresh machine.** It calls
-   `mktemp "${dest}.XXXX"` *before* `mkdir -p "$(dirname "$dest")"`, so it
-   errors out if `~/.config/hypr`, `~/.config/waybar`, `~/.config/rofi`, or
-   `~/.config/ghostty` does not already exist.
+Both were present in the old `theme-colors.rasi`, so it failed to parse
+(`rofi -no-config -theme <file> -dump-theme` warned `Failed to parse theme`) and
+rofi theming was broken independently of the palette problem. The switcher now
+emits a `* { }` block with hyphenated names:
 
-5. **`set --no-reload` exits 1 on success.** The last statement is
-   `[ "$reload" -eq 1 ] && hypr_reload`, which is false under `--no-reload`, and
-   the script has no trailing `exit 0`.
+```rasi
+* {
+    bg:          #0f1115;
+    surface-alt: #0f1115;
+    /* Aliases for the names config.rasi references. */
+    background:  @bg;
+    foreground:  @fg;
+    color11:     @accent;
+}
+```
 
-6. **It writes into the repo.** `~/.config/ghostty` and `~/.config/rofi` are
-   folded symlinks into this checkout, so `ghostty/.config/ghostty/theme.conf`,
-   `rofi/.config/rofi/theme-colors.rasi`, and
-   `rofi/.config/rofi/generated-theme.rasi` are generated files that ended up
-   tracked in git.
-
-### `config/.config/scripts/theme-switch.sh` — file-first
-
-This is what `ts` runs. Commands: `list`, `current`, `set THEME`, `status`,
-`help`. It reads `~/.config/themes/`, records the choice in
-`~/.config/theme-preference`, logs to `~/.cache/theme-switch.log`, and for each
-component symlinks or copies the theme's own file:
-
-| Component | Action | Destination |
-| --- | --- | --- |
-| Hyprland | copy `hyprland-style.conf` (falls back to `hyprland.conf`) | `~/.config/hypr/conf/theme.conf` |
-| Waybar | symlink `waybar.css` | `~/.config/waybar/style.css` |
-| Rofi | symlink `rofi.rasi` | `~/.config/rofi/theme.rasi` |
-| SwayNC | symlink `swaync.css` | `~/.config/swaync/style.css` |
-| Ghostty | copy `ghostty.conf` | `~/.config/ghostty/theme.conf` |
-| Starship | symlink `starship.toml` | `~/.config/starship.toml` |
-
-**Confirmed defects:**
-
-1. **It clobbers tracked files.** `~/.config/hypr/conf` is a symlink into this
-   repo, so the Hyprland step overwrites the tracked
-   `hyprland/.config/hypr/conf/theme.conf`. The Waybar and Rofi steps repoint
-   symlinks away from the repo's own `style.css` and `config.rasi` wiring.
-2. **It breaks the generated-colour pipeline.** `waybar/.config/waybar/style.css`
-   and `rofi/.config/rofi/config.rasi` as committed consume the palette-first
-   switcher's output
-   (`@import url("theme-colors.css")`, `@theme ".../generated-theme.rasi"`).
-   Replacing them with a theme's own `waybar.css` / `rofi.rasi` drops that.
-3. **`setup_base_configs` reads `~/.config/base/waybar/config`**, which is not in
-   this repo. That path is a dangling symlink on the reference machine.
-4. **`tokyonight` cannot be applied.** It has only `colors.conf`; every component
-   step logs a warning and skips.
-5. `themes/.config/themes/README.md` documents this switcher. It contradicts this
-   file wherever the two disagree; this file is the accurate one.
-6. **It reintroduces absolute symlink targets.** `THEMES_DIR` (`:14`),
-   `ROFI_THEME` (`:22`) and `SWAYNC_STYLE` (`:23`) are built from `$HOME`, so the
-   `ln -sf` calls at `:233` and `:251` write `$HOME/.config/themes/<theme>/...`
-   over `rofi/.config/rofi/theme.rasi` and `swaync/.config/swaync/style.css`.
-   Under folded stow both destinations land in the repo, so one run replaces
-   those two committed symlinks — made repo-relative so they resolve for any
-   user — with absolute `/home/<user>/...` targets and leaves the tree dirty.
-   This is one alias away: `ts` (`zshrc/.zshrc:21`).
+`config.rasi` references `@background`, `@foreground` and `@color11` — names
+inherited from pywal's rofi template — so the switcher defines them as aliases
+onto the palette. `config.rasi` also references `@border-width`,
+`@border-radius` and `@current-image`, which come from
+`config/.config/settings/*.rasi` and `config/.config/cache/current_wallpaper.rasi`.
+Nothing imports those fragments today; that is unchanged and unrelated to
+colour.
 
 ## Leftovers on the reference machine
 
-These exist because both switchers have been run at different times:
+Deployed state that predates this switcher and is not recreated:
 
-- `~/.config/themes/current -> <clone>/themes/macos-dark` — dangling.
-- `~/.config/themes/colors.conf` — dangling, follows `current`.
-- `~/.config/rofi/theme.rasi` and `~/.config/swaync/style.css` — committed
-  symlinks left by the file-first switcher. Their targets are now relative to
-  the repo, so they resolve rather than dangle, but nothing regenerates them.
+- `~/.config/themes/{default,macos-dark,tokyonight,README.md}` — per-entry
+  symlinks from an older stow run. `default` now dangles and can be deleted.
 - `~/.config/hypr/theme.conf` — a stray copy at the `hypr` root rather than in
-  `conf/`. Nothing sources it; `hyprland/.config/hypr/hyprland.conf:41` sources
-  `conf/theme.conf`.
+  `conf/`. Nothing sources it; `hyprland.conf:41` sources `conf/theme.conf`.
 
-Two more were orphaned by the dead-package removal in commit `5a2c847`:
-
-- `~/.config/hypr/mocha.conf -> ../../dotfiles/hyprmocha/.config/hypr/mocha.conf`
-  — now dangling, because the `hyprmocha` package was deleted. Nothing in this
-  repo sources `mocha.conf`, so nothing breaks.
-- `~/hyprland.conf -> dotfiles/hyprland/hyprland.conf` — now dangling, because
-  the stub at the `hyprland` package root was deleted. Nothing sources it. That
-  a Hyprland config was ever stowed to `$HOME` rather than `~/.config/hypr` is
-  itself the evidence that the stub was dead weight.
-
-Both are safe to delete once this branch is merged:
+Safe to delete:
 
 ```sh
-rm ~/.config/hypr/mocha.conf ~/hyprland.conf
+rm ~/.config/themes/default
 ```
 
-## What has to happen to fix this
-
-Not done in this repo yet. Consolidating onto the palette-first switcher needs,
-at minimum:
-
-1. A `BG`/`SURFACE`/`TEXT`/`ACCENT` palette authored for each theme — these are
-   design decisions, not a mechanical rename of the `THEME_*` values.
-2. SwayNC and Starship handling added to `scripts/theme-switch.sh`, or an
-   explicit decision to drop them.
-3. The other four of the six defects above fixed (`list` path, `write_atomic`
-   ordering, `set` exit code, generated output escaping into the repo). Defects
-   2 and 3 are covered by item 1.
-4. `ts` in `zshrc/.zshrc:21` repointed, the file-first switcher removed, and
-   `themes/.config/themes/README.md` retired.
-
-Until then, do not run either switcher on a working setup.
+`~/.config/base`, `~/.config/hypr/mocha.conf` and `~/hyprland.conf` were listed
+here as dangling links in earlier revisions of this doc. They are absent
+entirely — `ls -ld` reports *No such file or directory*, which a dangling
+symlink would not — so there is nothing left to remove.
 
 ## Design specs
 
 `docs/macos-theme-spec.md` and `docs/warm-theme-design-spec.md` are aspirational
-design documents. They describe intended visual direction. Their implementation
-status has not been verified against the configs in this repo — do not read them
-as descriptions of current behaviour.
+design documents. They describe intended visual direction, and they disagree
+with the recovered `macos-dark` palette in several slots (the spec says
+`WARN=#FFD60A`; the live value is `#ffc934`). The palette is what renders — do
+not read the specs as descriptions of current behaviour.

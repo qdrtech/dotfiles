@@ -13,12 +13,6 @@ cd ~/dotfiles
 symlinks at stow time and computes each relative target from wherever you
 cloned, and nothing in the repo assumes a particular clone path.
 
-Two symlinks *are* committed — `rofi/.config/rofi/theme.rasi` and
-`swaync/.config/swaync/style.css`. Their targets are relative to the repo
-(`../../../themes/.config/themes/default/`), so they resolve from any clone
-path for any user, whether or not stow folds the directory. See
-[packages.md](packages.md).
-
 The `nvim` package is a git submodule pointing at
 `git@github.com:qdrtech/xghost-config` over SSH. Without access to that repo the
 submodule stays empty; skip the `nvim` package below if so.
@@ -169,10 +163,14 @@ or the setting silently falls back.
 
 These are real, verified gaps. Fix or ignore, but do not expect them to work.
 
-- **The generated colour files are missing and nothing can generate them.**
-  This is the largest gap on a fresh machine. `~/.config/hypr/theme-colors.conf`
-  and `~/.config/waybar/theme-colors.css` are produced by the theme switcher and
-  are not tracked in this repo, but the committed configs require them:
+- **The generated colour files do not exist until you run the theme switcher.**
+  None of them are tracked. Run this once, immediately after stowing:
+
+  ```sh
+  bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" set macos-dark
+  ```
+
+  Until you do, the committed configs are missing their colours:
 
   - `hyprland/.config/hypr/hyprland.conf:22` does
     `source = ~/.config/hypr/theme-colors.conf`. With the file absent that
@@ -185,15 +183,16 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
     `@import url("theme-colors.css")`. With the file absent the import fails and
     `@bg`, `@surface` and `@text` — used at lines 9, 10, 19, 24 and 25 — are
     undefined, so the bar comes up unstyled.
-  - Rofi is the exception: `rofi/.config/rofi/config.rasi:9` points `@theme` at
-    `generated-theme.rasi`, which rofi resolves against the directory of the
-    including file, and `generated-theme.rasi` *is* committed — so the launcher
-    comes up themed with no generation step.
-
-  The only thing that writes these files is `scripts/theme-switch.sh`
-  (`scripts/theme-switch.sh:15-18`), and it is broken — see
-  [theme-switching.md](theme-switching.md). The other switcher never generates
-  them. There is no working way to produce the missing files today.
+  - `swaync/.config/swaync/style.css:1` does the same with
+    `~/.config/swaync/theme-colors.css`.
+  - `rofi/.config/rofi/config.rasi:9` points `@theme` at `generated-theme.rasi`.
+    With the file absent rofi falls back to its built-in theme and the launcher
+    still opens. It does not warn: `rofi -config <config.rasi> -dump-theme`
+    exits 0 with empty stderr. Note for anyone testing rofi theming, here or
+    elsewhere: rofi exits 0 on a theme *parse failure* too, so empty stderr is
+    the only usable success criterion.
+  - `~/.config/starship.toml` is generated too. Without it, starship uses its
+    own defaults.
 - **`~/.config/hypr/scripts/xdg.sh` does not exist.**
   `hyprland/.config/hypr/conf/autostart.conf:8` runs it on every login. It was
   never committed. Its stated job was XDG desktop portal setup for screen
@@ -202,21 +201,14 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   not in this repo.** It calls
   `wofi -c ~/.config/wofi/waybar -s ~/.config/wofi/style-waybar.css`. The `wofi`
   package only ships `wofi/.config/wofi/style.css`.
-- **Theming does not apply cleanly.** See [theme-switching.md](theme-switching.md).
-- **`themes/.config/themes/default/rofi.rasi` does not parse.** Rofi rejects the
-  file itself (`rofi -no-config -theme <file> -dump-theme` warns "Failed to
-  parse theme"), and so does the `theme-colors.rasi` it imports, which uses a
-  top-level `@name: value;` form rofi no longer accepts. Nothing in the live
-  launcher path loads either file — `config.rasi` uses `generated-theme.rasi` —
-  so this only matters if the theme switcher is revived.
+- **`ghostty/.config/ghostty/config` does not `include` `theme.conf`.** The
+  switcher writes the file; Ghostty never reads it. See
+  [packages.md](packages.md).
 
 No absolute path carrying a username is left in the tree, including symlink
-targets, with one exception: `themes/.config/themes/README.md:210` still holds a
-`/home/username/...` placeholder inside a waybar config example. That file
-documents the superseded file-first theme switcher and is stale throughout, so
-it was left untouched; it is tracked under issue #43.
+targets.
 
-Re-check with `git grep -n /home/` — it returns that placeholder and this
-document's own mentions of the pattern, nothing else — plus
+Re-check with `git grep -n /home/` — it returns only this
+document's own mentions of the pattern — plus
 `git ls-tree -r HEAD | grep 120000`, because `git grep` does not read symlink
 targets.

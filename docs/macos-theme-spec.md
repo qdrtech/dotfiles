@@ -702,7 +702,8 @@ export THEME_FONT_DISPLAY="SF Pro Display"
 
 ### **5.4 Theme Switcher Script**
 
-**File:** `~/.config/scripts/theme-switch.sh`
+**File:** `scripts/theme-switch.sh` (the aspirational path in this section was
+`~/.config/scripts/theme-switch.sh`, which no longer exists)
 
 **Pseudocode:**
 ```bash
@@ -839,7 +840,7 @@ fi
 **Keybinding:**
 ```conf
 # ~/.config/hypr/keybindings.conf
-bind = SUPER_SHIFT, T, exec, ~/.config/scripts/theme-switch.sh menu
+bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh menu
 ```
 
 ---
@@ -1001,10 +1002,10 @@ bind = SUPER_SHIFT, T, exec, ~/.config/scripts/theme-switch.sh menu
 git clone https://github.com/yourusername/macos-hyprland-theme ~/.config/themes/macos-dark
 
 # Switch to macOS dark theme
-~/.config/scripts/theme-switch.sh set macos-dark
+bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" set macos-dark
 
-# Open theme selector
-~/.config/scripts/theme-switch.sh menu
+# Open theme selector (aspirational; the shipped switcher has no menu command)
+bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" menu
 
 # Or use keybinding: Super+Shift+T
 ```

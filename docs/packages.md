@@ -27,16 +27,16 @@ Shared helpers that are not tied to one program.
 | `scripts/git-prune.sh` | `git fetch --prune`, then interactively deletes local branches whose upstream is gone. Aliased to `gitprune`. |
 | `scripts/docker-login-ecr.sh` | Work-specific AWS ECR login. Aliased to `dle`. Not generally useful. |
 | `scripts/wal` | A vendored copy of the pywal shell script (`wal`) by Dylan Araps. Requires ImageMagick's `convert`. |
-| `scripts/theme-switch.sh` | The **older** theme switcher. See [theme-switching.md](theme-switching.md). |
 | `settings/rofi-border.rasi`, `rofi-border-radius.rasi`, `rofi-font.rasi` | One-line rofi settings fragments. Nothing in this repo imports them. |
 | `cache/blurred_wallpaper.png` | Lock screen background. Read by `hyprland/.config/hypr/hyprlock.conf:15`. |
 | `cache/current_wallpaper`, `cache/current_wallpaper.rasi` | Wallpaper path record and a rofi snippet that points at `blurred_wallpaper.png`. |
 
 `~/.config/scripts` is on `PATH` (`zshrc/.zshrc:42`).
 
-Note: `~/.config/base` exists on the reference machine as a dangling symlink to
-`config/.config/base`, which is not in this repo. Only the older theme switcher
-referenced it.
+Note: `config/.config/base` is not in this repo, and `~/.config/base` does not
+exist on the reference machine either — `ls -ld` reports *No such file or
+directory*, so there is no dangling symlink to clean up. Only the removed
+file-first theme switcher ever referenced the path.
 
 ---
 
@@ -47,7 +47,7 @@ referenced it.
 | File | What it does |
 | --- | --- |
 | `config` | Ghostty settings: `.SF NS Mono` at 14pt, ligatures, 10px horizontal padding, `background-blur-radius = 20`, `background-opacity = 0.2`, GTK titlebar, sudo shell integration. |
-| `theme.conf` | **Generated**, not authored. Written by `scripts/theme-switch.sh`. It is committed because `~/.config/ghostty` is a folded symlink into this repo, so the switcher writes straight into the working tree. |
+| `theme.conf` | **Generated**, not authored. Written by `scripts/theme-switch.sh`. `~/.config/ghostty` is a folded symlink into this repo, so the switcher writes straight into the working tree; the path is in `.gitignore`. |
 
 `config` does **not** `include` `theme.conf`. As committed, Ghostty never reads
 the generated colours.
@@ -130,11 +130,19 @@ commit a submodule pointer change unless you mean to.
 | File | What it does |
 | --- | --- |
 | `config.rasi` | Launcher config and full widget styling. Line 9 loads the generated theme with `@theme "generated-theme.rasi"`; rofi resolves an `@import`/`@theme` filename against the directory of the including file. |
-| `theme.rasi` | A committed **symlink** to `../../../themes/.config/themes/default/rofi.rasi`, i.e. into the `themes` package of this repo. Left over from the older theme switcher; `config.rasi` no longer references it. |
-| `theme-colors.rasi`, `generated-theme.rasi` | **Generated** by `scripts/theme-switch.sh`, committed for the same folded-symlink reason as Ghostty's `theme.conf`. |
+| `theme-colors.rasi` | **Generated** by `scripts/theme-switch.sh`. The palette, as a `* { }` block. Imported by `generated-theme.rasi`. |
+| `generated-theme.rasi` | **Generated** by `scripts/theme-switch.sh`. Widget styling built from the palette. |
 
-`config.rasi` also uses `@color11` and `@background`, which come from pywal
-output rather than from the theme switcher.
+Both generated files are in `.gitignore`; `~/.config/rofi` is a folded symlink
+into this repo, so the switcher writes straight into the working tree. Run
+`ts set <theme>` once after stowing to produce them.
+
+`config.rasi` uses `@background`, `@foreground` and `@color11` — names inherited
+from pywal's rofi template. The switcher defines them in `theme-colors.rasi` as
+aliases onto `@bg`, `@fg` and `@accent`, so they resolve from the palette.
+`@border-width`, `@border-radius` and `@current-image` come from the fragments
+under `config/.config/settings/` and `config/.config/cache/`, which nothing
+currently imports.
 
 ---
 
@@ -145,7 +153,8 @@ output rather than from the theme switcher.
 | File | What it does |
 | --- | --- |
 | `config.json` | SwayNC behaviour. |
-| `style.css` | A committed **symlink** to `../../../themes/.config/themes/default/swaync.css`, i.e. into the `themes` package of this repo. Written by the older theme switcher, and still what swaync loads. |
+| `style.css` | Real stylesheet. First line is `@import url("theme-colors.css")`, so it depends on the generated file existing. Uses `@bg`, `@surface`, `@surface-alt`, `@text`, `@text-muted`, `@accent` and `@error`. |
+| `theme-colors.css` | **Generated** by `scripts/theme-switch.sh`, and in `.gitignore` for the same folded-symlink reason as Ghostty's `theme.conf`. |
 | `refresh.sh` | `pkill swaync; swaync`. |
 
 Waybar's `custom/notification` module toggles the panel via `swaync-client -t -sw`.
@@ -156,23 +165,22 @@ Waybar's `custom/notification` module toggles the panel via `swaync-client -t -s
 
 **Target:** `~/.config/themes`
 
-Three theme directories — `default`, `macos-dark`, `tokyonight` — plus a
-`README.md` describing the older switcher's design.
+Two theme directories — `macos-dark` and `tokyonight` — plus a short
+`README.md`.
 
-`default` and `macos-dark` each ship `colors.conf`, `ghostty.conf`, `rofi.rasi`,
-`starship.toml`, `swaync.css`, `waybar.css`, and a Hyprland file
-(`hyprland-style.conf` for `default`, `hyprland.conf` for `macos-dark`).
-`tokyonight` ships only `colors.conf`, so it cannot be applied by the older
-switcher.
-
-**Important:** every `colors.conf` here uses `THEME_*` variables
-(`THEME_BG_WINDOW`, `THEME_ACCENT_BLUE`, …). That is the older switcher's format.
-The palette-first switcher in `scripts/` expects a different, much smaller set
-(`BG`, `SURFACE`, `TEXT`, `ACCENT`, …), which no theme in this repo provides. See
+Each theme is exactly one file, `colors.conf`, holding the ten `#RRGGBB`
+variables `scripts/theme-switch.sh` reads: `BG`, `SURFACE`, `SURFACE_ALT`,
+`TEXT`, `TEXT_MUTED`, `ACCENT`, `ACCENT_ALT`, `WARN`, `ERROR`, `SUCCESS`. There
+are no per-component files; the switcher generates all of them. See
 [theme-switching.md](theme-switching.md).
 
-`themes/.config/themes/README.md` describes the older switcher only. Treat it as
-historical; it contradicts `docs/theme-switching.md`.
+A third theme, `default`, was deleted — its palette duplicated `tokyonight`, its
+component files duplicated `macos-dark`, and its waybar stylesheet was
+pywal-driven. See issue #43.
+
+If stow folds `~/.config/themes` into this package, the switcher's bookkeeping
+files (`current`, `colors.conf`, `current.txt`) land here; they are in
+`.gitignore`.
 
 ---
 
@@ -262,8 +270,8 @@ Emacs keybindings, 1000-line history, `compinit`, syntax highlighting and
 autosuggestions from `/usr/share/zsh/plugins/`, `starship init`, and the pywal
 sequence replay described under `wal`.
 
-Aliases: `gitprune`, `dle`, `ts` (theme switch — currently points at
-`~/.config/scripts/theme-switch.sh`, the **older** switcher), `ll`/`la`/`l`, and
+Aliases: `gitprune`, `dle`, `ts` (theme switch — runs
+`${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh`), `ll`/`la`/`l`, and
 `..` through `.........`.
 
 `PATH` additions: `~/.config/scripts`, `~/.local/bin`, bun, pnpm, flyctl,
