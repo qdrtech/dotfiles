@@ -235,6 +235,11 @@ OSC 11/17/19/708 so the opaque background does not override Ghostty's
 
 `~/.config/waybar/theme-colors.css` is generated and not tracked.
 
+`themes/{default,experimental,line,zen}/` (four `config-<name>` / `style-<name>.css`
+pairs) and `assets/*.png` are still in the package but unused — they existed only
+for the bar-theme picker removed in #44. Applying one is a manual copy of the pair
+over `config` and `style.css`.
+
 ---
 
 ## `yay`
