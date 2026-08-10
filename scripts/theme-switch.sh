@@ -357,7 +357,7 @@ format = 'via [\$symbol(\$version )](\$style)'
 [bun]
 symbol = '🍔 '
 style = 'success'
-format = 'via [\$symbol(\$version)](\$style)'
+format = 'via [\$symbol(\$version)](\$style) '
 
 [golang]
 style = 'accent'
