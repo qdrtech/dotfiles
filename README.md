@@ -38,7 +38,7 @@ Two directories are **not** stow packages: `scripts/` and `docs/`.
 | `nvim`       | Neovim (**git submodule**)             | `~/.config/nvim`          |
 | `rofi`       | Rofi launcher                          | `~/.config/rofi`          |
 | `swaync`     | SwayNotificationCenter                 | `~/.config/swaync`        |
-| `themes`     | colour themes for the theme switcher   | `~/.config/themes`        |
+| `themes`     | colour palettes for the theme switcher | `~/.config/themes`        |
 | `tmux`       | tmux                                   | `~/.tmux.conf`            |
 | `wal`        | pywal templates and colorschemes       | `~/.config/wal`           |
 | `wallpapers` | wallpaper images (~57 MB)              | `~/.config/wallpapers`    |
@@ -72,11 +72,19 @@ assumes a particular clone path.
 
 ## Theming
 
-Themes and the theme switcher are in a partially migrated state. Two switchers
-exist, they use incompatible theme formats, and neither currently applies a
-theme end to end. Read [docs/theme-switching.md](docs/theme-switching.md) before
-running either one — it documents what actually happens today, including what
-will break.
+One switcher, `scripts/theme-switch.sh`, aliased to `ts`. A theme is ten colour
+variables in `themes/.config/themes/<name>/colors.conf`; the switcher generates
+the Hyprland, Waybar, Rofi, SwayNC, Ghostty and Starship colour files from them.
+
+```sh
+ts list              # macos-dark, tokyonight
+ts current
+ts set macos-dark
+```
+
+**Run `ts set <theme>` once after stowing.** None of the generated colour files
+are tracked, and several configs need them.
+Details: [docs/theme-switching.md](docs/theme-switching.md).
 
 ## Known limitations
 
@@ -93,10 +101,11 @@ This config is tied to one machine. Specifically:
 - **macOS fonts.** `ghostty/.config/ghostty/config` sets `font-family = .SF NS Mono`
   and `gtk-3.0/settings.ini` references SF Pro. These are Apple fonts and are not
   present on Arch by default.
-- **Generated files are committed.** Because `~/.config/ghostty` and
-  `~/.config/rofi` are symlinks into this repo, the theme switcher writes its
-  generated output back into tracked files. See
-  [docs/packages.md](docs/packages.md).
+- **The theme switcher writes into the repo.** Because `~/.config/ghostty`,
+  `~/.config/rofi` and `~/.config/swaync` are folded symlinks into this repo,
+  the switcher's generated output lands in the working tree. Those paths are in
+  `.gitignore`, so they are untracked rather than committed, but they will
+  appear in your checkout. See [docs/packages.md](docs/packages.md).
 
 None of these are fixed in this repo today. They are listed so you know what to
 change before reusing it.
