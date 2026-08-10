@@ -211,5 +211,12 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   so this only matters if the theme switcher is revived.
 
 No absolute path carrying a username is left in the tree, including symlink
-targets. Re-check with `git grep -n /home/` plus
-`git ls-tree -r HEAD | grep 120000` — `git grep` does not read symlink targets.
+targets, with one exception: `themes/.config/themes/README.md:210` still holds a
+`/home/username/...` placeholder inside a waybar config example. That file
+documents the superseded file-first theme switcher and is stale throughout, so
+it was left untouched; it is tracked under issue #43.
+
+Re-check with `git grep -n /home/` — it returns that placeholder and this
+document's own mentions of the pattern, nothing else — plus
+`git ls-tree -r HEAD | grep 120000`, because `git grep` does not read symlink
+targets.
