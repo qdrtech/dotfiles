@@ -26,8 +26,9 @@ switcher, so do not write `0x` here.
 ## Adding a theme
 
 ```sh
-mkdir -p ~/dotfiles/themes/.config/themes/<name>
-$EDITOR ~/dotfiles/themes/.config/themes/<name>/colors.conf   # the ten vars above
+DOTFILES="${DOTFILES_DIR:-$HOME/dotfiles}"
+mkdir -p "$DOTFILES/themes/.config/themes/<name>"
+$EDITOR "$DOTFILES/themes/.config/themes/<name>/colors.conf"   # the ten vars above
 ts set <name>
 ```
 

@@ -167,7 +167,7 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   None of them are tracked. Run this once, immediately after stowing:
 
   ```sh
-  ~/dotfiles/scripts/theme-switch.sh set macos-dark
+  bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" set macos-dark
   ```
 
   Until you do, the committed configs are missing their colours:
