@@ -11,7 +11,7 @@ sh ~/.config/scripts/term-startup.sh
 
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/qdrtech/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
@@ -29,7 +29,7 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 eval "$(starship init zsh)"
 
 # bun completions
-[ -s "/home/qdrtech/.bun/_bun" ] && source "/home/qdrtech/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -42,7 +42,7 @@ export FZF_DEFAULT_COMMAND='fd'
 export PATH=$PATH:$HOME/.config/scripts
 
 export PATH="${PATH}:${HOME}/.local/bin/"
-export FLYCTL_INSTALL="/home/qdrtech/.fly"
+export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # Import colorscheme from 'wal', minus the background/highlight-background
@@ -53,7 +53,7 @@ if [[ -f $HOME/.cache/wal/sequences ]]; then
 fi
 
 # pnpm
-export PNPM_HOME="/home/qdrtech/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -76,4 +76,4 @@ alias .........="cd ../../../../../../../.."
 
 
 # opencode
-export PATH=/home/qdrtech/.opencode/bin:$PATH
+export PATH="$HOME/.opencode/bin:$PATH"

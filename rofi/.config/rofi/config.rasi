@@ -6,7 +6,7 @@ configuration {
     drun-display-format: "{name}";
 }
 
-@theme "/home/qdrtech/.config/rofi/generated-theme.rasi"
+@theme "generated-theme.rasi"
 
 // Main //
 window {

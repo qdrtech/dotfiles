@@ -82,7 +82,7 @@ SUCCESS="#a6e3a1"
    the reference machine hold a dark macOS-ish palette (`#0f1115`, `#0a84ff`)
    that is not derivable from any `colors.conf` in this repo. The source palette
    could not be located: `~/.config/themes/current` points at
-   `/home/qdrtech/dotfiles/themes/macos-dark`, and that path does not exist (the
+   `<clone>/themes/macos-dark`, and that path does not exist (the
    committed theme lives at `themes/.config/themes/macos-dark`). Running `set`
    today replaces those colours with the Catppuccin fallback.
 
@@ -134,15 +134,24 @@ component symlinks or copies the theme's own file:
    step logs a warning and skips.
 5. `themes/.config/themes/README.md` documents this switcher. It contradicts this
    file wherever the two disagree; this file is the accurate one.
+6. **It reintroduces absolute symlink targets.** `THEMES_DIR` (`:14`),
+   `ROFI_THEME` (`:22`) and `SWAYNC_STYLE` (`:23`) are built from `$HOME`, so the
+   `ln -sf` calls at `:233` and `:251` write `$HOME/.config/themes/<theme>/...`
+   over `rofi/.config/rofi/theme.rasi` and `swaync/.config/swaync/style.css`.
+   Under folded stow both destinations land in the repo, so one run replaces
+   those two committed symlinks — made repo-relative so they resolve for any
+   user — with absolute `/home/<user>/...` targets and leaves the tree dirty.
+   This is one alias away: `ts` (`zshrc/.zshrc:21`).
 
 ## Leftovers on the reference machine
 
 These exist because both switchers have been run at different times:
 
-- `~/.config/themes/current -> /home/qdrtech/dotfiles/themes/macos-dark` — dangling.
+- `~/.config/themes/current -> <clone>/themes/macos-dark` — dangling.
 - `~/.config/themes/colors.conf` — dangling, follows `current`.
 - `~/.config/rofi/theme.rasi` and `~/.config/swaync/style.css` — committed
-  symlinks with absolute `/home/qdrtech` targets, left by the file-first switcher.
+  symlinks left by the file-first switcher. Their targets are now relative to
+  the repo, so they resolve rather than dangle, but nothing regenerates them.
 - `~/.config/hypr/theme.conf` — a stray copy at the `hypr` root rather than in
   `conf/`. Nothing sources it; `hyprland/.config/hypr/hyprland.conf:41` sources
   `conf/theme.conf`.

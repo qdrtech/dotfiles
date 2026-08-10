@@ -129,8 +129,8 @@ commit a submodule pointer change unless you mean to.
 
 | File | What it does |
 | --- | --- |
-| `config.rasi` | Launcher config and full widget styling. Line 9 loads the generated theme with an **absolute** path: `@theme "/home/qdrtech/.config/rofi/generated-theme.rasi"`. |
-| `theme.rasi` | A committed **symlink** to `/home/qdrtech/.config/themes/default/rofi.rasi`. Left over from the older theme switcher; `config.rasi` no longer references it. Dangling on any other machine. |
+| `config.rasi` | Launcher config and full widget styling. Line 9 loads the generated theme with `@theme "generated-theme.rasi"`; rofi resolves an `@import`/`@theme` filename against the directory of the including file. |
+| `theme.rasi` | A committed **symlink** to `../../../themes/.config/themes/default/rofi.rasi`, i.e. into the `themes` package of this repo. Left over from the older theme switcher; `config.rasi` no longer references it. |
 | `theme-colors.rasi`, `generated-theme.rasi` | **Generated** by `scripts/theme-switch.sh`, committed for the same folded-symlink reason as Ghostty's `theme.conf`. |
 
 `config.rasi` also uses `@color11` and `@background`, which come from pywal
@@ -145,7 +145,7 @@ output rather than from the theme switcher.
 | File | What it does |
 | --- | --- |
 | `config.json` | SwayNC behaviour. |
-| `style.css` | A committed **symlink** to `/home/qdrtech/.config/themes/default/swaync.css`, written by the older theme switcher. Dangling on any other machine. |
+| `style.css` | A committed **symlink** to `../../../themes/.config/themes/default/swaync.css`, i.e. into the `themes` package of this repo. Written by the older theme switcher, and still what swaync loads. |
 | `refresh.sh` | `pkill swaync; swaync`. |
 
 Waybar's `custom/notification` module toggles the panel via `swaync-client -t -sw`.
@@ -183,7 +183,8 @@ historical; it contradicts `docs/theme-switching.md`.
 Prefix remapped to `C-a`. `|` and `-` split. `M-h/j/k/l` pane navigation. Mouse
 on, `escape-time 0`, windows and panes indexed from 1. Default shell hardcoded to
 `/usr/bin/zsh`. Plugins via tpm: `tmux-resurrect` and `tmux-continuum` with
-`@continuum-restore on`. The reload binding hardcodes `~/dotfiles/tmux/.tmux.conf`.
+`@continuum-restore on`. The reload binding sources `~/.tmux.conf`, the stowed
+path, so it does not depend on where the repo is cloned.
 
 tpm itself is not vendored — clone it to `~/.tmux/plugins/tpm`.
 
@@ -266,4 +267,4 @@ Aliases: `gitprune`, `dle`, `ts` (theme switch — currently points at
 `..` through `.........`.
 
 `PATH` additions: `~/.config/scripts`, `~/.local/bin`, bun, pnpm, flyctl,
-opencode. `/home/qdrtech` is written literally on lines 14, 32, 45, 56 and 79.
+opencode. All of them go through `$HOME`; no home directory is hardcoded.
