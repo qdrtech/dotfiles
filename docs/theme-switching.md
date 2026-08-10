@@ -145,6 +145,22 @@ These exist because both switchers have been run at different times:
 - `~/.config/hypr/theme.conf` — a stray copy at the `hypr` root rather than in
   `conf/`. Nothing sources it; `hyprland.conf:41` sources `conf/theme.conf`.
 
+Two more were orphaned by the dead-package removal in commit `5a2c847`:
+
+- `~/.config/hypr/mocha.conf -> ../../dotfiles/hyprmocha/.config/hypr/mocha.conf`
+  — now dangling, because the `hyprmocha` package was deleted. Nothing in this
+  repo sources `mocha.conf`, so nothing breaks.
+- `~/hyprland.conf -> dotfiles/hyprland/hyprland.conf` — now dangling, because
+  the stub at the `hyprland` package root was deleted. Nothing sources it. That
+  a Hyprland config was ever stowed to `$HOME` rather than `~/.config/hypr` is
+  itself the evidence that the stub was dead weight.
+
+Both are safe to delete once this branch is merged:
+
+```sh
+rm ~/.config/hypr/mocha.conf ~/hyprland.conf
+```
+
 ## What has to happen to fix this
 
 Not done in this repo yet. Consolidating onto the palette-first switcher needs,
