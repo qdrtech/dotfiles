@@ -65,8 +65,12 @@ stow -t "$HOME" hyprland waybar rofi ghostty swaync themes config \
 ```
 
 `stow` defaults its target to the parent of the repo directory. Cloning to
-`~/dotfiles` makes the default target `$HOME`, which is what the existing
-symlinks assume. `-t "$HOME"` makes that explicit.
+`~/dotfiles` makes the default target `$HOME`; `-t "$HOME"` states it
+explicitly and works from any clone location, because stow computes its
+symlink targets relative to wherever the repo actually is.
+
+The clone path still matters for one thing: `tmux/.tmux.conf:16` hardcodes
+`bind r source-file ~/dotfiles/tmux/.tmux.conf`.
 
 ## Theming
 

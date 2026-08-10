@@ -9,8 +9,17 @@ git clone --recurse-submodules <this-repo> ~/dotfiles
 cd ~/dotfiles
 ```
 
-Clone to `~/dotfiles`. The committed symlinks in `~/.config` are relative
-(`../dotfiles/...`), so a different location breaks them.
+Clone to `~/dotfiles`. Stow is not the reason: it creates the `~/.config`
+symlinks itself at stow time and computes each relative target from wherever
+you cloned, so stow's own links work from any location. The clone path matters
+for exactly one thing — `tmux/.tmux.conf:16` hardcodes
+`bind r source-file ~/dotfiles/tmux/.tmux.conf`, so the tmux reload binding only
+works from a clone at `~/dotfiles`.
+
+Two symlinks *are* committed, and both have **absolute** targets:
+`rofi/.config/rofi/theme.rasi` and `swaync/.config/swaync/style.css` point at
+`/home/qdrtech/.config/themes/default/`. Those are unaffected by where you clone
+and dangle for any other user. See [packages.md](packages.md).
 
 The `nvim` package is a git submodule pointing at
 `git@github.com:qdrtech/xghost-config` over SSH. Without access to that repo the
