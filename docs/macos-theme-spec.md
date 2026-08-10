@@ -157,10 +157,10 @@ Enable OpenType features for enhanced rendering:
 
 ```css
 font-feature-settings:
-  "calt" 1,
-  /* Contextual alternates */ "liga" 1,
-  /* Ligatures */ "kern" 1,
-  /* Kerning */ "tnum" 0; /* Proportional numerals (not tabular) */
+  "calt" 1,  /* Contextual alternates */
+  "liga" 1,  /* Ligatures */
+  "kern" 1,  /* Kerning */
+  "tnum" 0;  /* Proportional numerals (not tabular) */
 ```
 
 For monospace fonts (terminal):
