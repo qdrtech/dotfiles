@@ -23,7 +23,7 @@ Stow refuses to overwrite existing regular files. Move them out of the way first
 
 ```sh
 mkdir -p ~/dotfiles-backup
-for p in hypr waybar rofi ghostty swaync themes gtk-3.0 hyprshade wal wofi yay scripts settings cache wallpapers; do
+for p in hypr waybar rofi ghostty swaync themes gtk-3.0 hyprshade wal yay scripts settings cache wallpapers; do
   [ -e "$HOME/.config/$p" ] && mv "$HOME/.config/$p" ~/dotfiles-backup/
 done
 [ -e ~/.zshrc ] && mv ~/.zshrc ~/dotfiles-backup/
@@ -37,14 +37,14 @@ Dry run first. `-n` simulates, `-v` shows what it would do:
 ```sh
 cd ~/dotfiles
 stow -nv -t "$HOME" hyprland waybar rofi ghostty swaync themes config \
-                    gtk-3.0 hyprshade tmux wal wallpapers wofi yay zshrc nvim
+                    gtk-3.0 hyprshade tmux wal wallpapers yay zshrc nvim
 ```
 
 If the output looks right, drop `-n`:
 
 ```sh
 stow -v -t "$HOME" hyprland waybar rofi ghostty swaync themes config \
-                   gtk-3.0 hyprshade tmux wal wallpapers wofi yay zshrc nvim
+                   gtk-3.0 hyprshade tmux wal wallpapers yay zshrc nvim
 ```
 
 Packages are independent. You can stow a subset — for example just the shell:
@@ -97,57 +97,56 @@ stow package at all. The one exception is the per-package file tables in
 
 ### Required for the desktop session
 
-| Command / thing | Arch package | Referenced by |
-| --- | --- | --- |
-| `stow` | `stow` | deployment itself |
-| `Hyprland`, `hyprctl` | `hyprland` | the whole `hyprland` package |
-| `hypridle` | `hypridle` | `hyprland/.config/hypr/conf/autostart.conf`, `hyprland/.config/hypr/hypridle.conf` |
-| `hyprlock` | `hyprlock` | `hyprland/.config/hypr/conf/keybinding.conf:20`, `hyprland/.config/hypr/hyprlock.conf`, `hyprland/.config/hypr/hypridle.conf` |
-| `hyprpaper` | `hyprpaper` | `hyprland/.config/hypr/conf/autostart.conf:23`, `hyprland/.config/hypr/scripts/hyprpaper.sh` |
-| `hyprshade` | `hyprshade` (AUR) | `hyprland/.config/hypr/conf/autostart.conf:20`, `hyprshade/.config/hyprshade/config.toml` |
-| `hyprshot` | `hyprshot` (AUR) | `hyprland/.config/hypr/conf/keybinding.conf:18-19` |
-| `waybar` | `waybar` | `hyprland/.config/hypr/conf/autostart.conf:14`, `waybar/.config/waybar/scripts/*` |
-| `rofi` | `rofi` / `rofi-wayland` | `hyprland/.config/hypr/hyprland.conf:17` (`$menu = rofi -show drun`) |
-| `ghostty` | `ghostty` | `hyprland/.config/hypr/hyprland.conf:15` (`$terminal`) |
-| `nautilus` | `nautilus` | `hyprland/.config/hypr/hyprland.conf:16` (`$fileManager`) |
-| `swaync`, `swaync-client` | `swaync` | `waybar/.config/waybar/config` notification module, `swaync/` package |
-| `nm-applet` | `network-manager-applet` | `hyprland/.config/hypr/conf/autostart.conf:23` |
-| `blueman-applet`, `blueman-manager` | `blueman` | `hyprland/.config/hypr/conf/autostart.conf:23`, `waybar/.config/waybar/config` |
-| `wpctl` | `wireplumber` | `hyprland/.config/hypr/conf/keybinding.conf:65-68` (volume keys) |
-| `brightnessctl` | `brightnessctl` | `hyprland/.config/hypr/conf/keybinding.conf:69-70` |
-| `playerctl` | `playerctl` | `hyprland/.config/hypr/conf/keybinding.conf:73-76` |
-| `gsettings` | `glib2` | `config/.config/scripts/import-gsettings.sh` |
-| `killall` | `psmisc` | `waybar/.config/waybar/scripts/launch.sh`, `hyprland/.config/hypr/scripts/hyprpaper.sh` |
+| Command / thing                     | Arch package             | Referenced by                                                                                                                 |
+| ----------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| `stow`                              | `stow`                   | deployment itself                                                                                                             |
+| `Hyprland`, `hyprctl`               | `hyprland`               | the whole `hyprland` package                                                                                                  |
+| `hypridle`                          | `hypridle`               | `hyprland/.config/hypr/conf/autostart.conf`, `hyprland/.config/hypr/hypridle.conf`                                            |
+| `hyprlock`                          | `hyprlock`               | `hyprland/.config/hypr/conf/keybinding.conf:20`, `hyprland/.config/hypr/hyprlock.conf`, `hyprland/.config/hypr/hypridle.conf` |
+| `hyprpaper`                         | `hyprpaper`              | `hyprland/.config/hypr/conf/autostart.conf:23`, `hyprland/.config/hypr/scripts/hyprpaper.sh`                                  |
+| `hyprshade`                         | `hyprshade` (AUR)        | `hyprland/.config/hypr/conf/autostart.conf:20`, `hyprshade/.config/hyprshade/config.toml`                                     |
+| `hyprshot`                          | `hyprshot` (AUR)         | `hyprland/.config/hypr/conf/keybinding.conf:18-19`                                                                            |
+| `waybar`                            | `waybar`                 | `hyprland/.config/hypr/conf/autostart.conf:14`, `waybar/.config/waybar/scripts/*`                                             |
+| `rofi`                              | `rofi` / `rofi-wayland`  | `hyprland/.config/hypr/hyprland.conf:17` (`$menu = rofi -show drun`)                                                          |
+| `ghostty`                           | `ghostty`                | `hyprland/.config/hypr/hyprland.conf:15` (`$terminal`)                                                                        |
+| `nautilus`                          | `nautilus`               | `hyprland/.config/hypr/hyprland.conf:16` (`$fileManager`)                                                                     |
+| `swaync`, `swaync-client`           | `swaync`                 | `waybar/.config/waybar/config` notification module, `swaync/` package                                                         |
+| `nm-applet`                         | `network-manager-applet` | `hyprland/.config/hypr/conf/autostart.conf:23`                                                                                |
+| `blueman-applet`, `blueman-manager` | `blueman`                | `hyprland/.config/hypr/conf/autostart.conf:23`, `waybar/.config/waybar/config`                                                |
+| `wpctl`                             | `wireplumber`            | `hyprland/.config/hypr/conf/keybinding.conf:65-68` (volume keys)                                                              |
+| `brightnessctl`                     | `brightnessctl`          | `hyprland/.config/hypr/conf/keybinding.conf:69-70`                                                                            |
+| `playerctl`                         | `playerctl`              | `hyprland/.config/hypr/conf/keybinding.conf:73-76`                                                                            |
+| `gsettings`                         | `glib2`                  | `config/.config/scripts/import-gsettings.sh`                                                                                  |
+| `killall`                           | `psmisc`                 | `waybar/.config/waybar/scripts/launch.sh`, `hyprland/.config/hypr/scripts/hyprpaper.sh`                                       |
 
 ### Required by Waybar modules
 
-| Command / thing | Arch package | Referenced by |
-| --- | --- | --- |
-| `checkupdates` | `pacman-contrib` | `waybar/.config/waybar/config` `custom/pacman` |
-| `yay` | `yay` (AUR) | `waybar/.config/waybar/config` `custom/pacman` on-click; `yay/` package |
-| `kitty` | `kitty` | `waybar/.config/waybar/config` network + pacman on-click (hardcoded, even though the session terminal is Ghostty) |
-| `hyprpicker` | `hyprpicker` | `waybar/.config/waybar/scripts/colorpicker.sh` |
-| `wl-copy` | `wl-clipboard` | `waybar/.config/waybar/scripts/colorpicker.sh` |
-| `notify-send` | `libnotify` | `waybar/.config/waybar/scripts/colorpicker.sh` |
-| `wofi` | `wofi` | `waybar/.config/waybar/scripts/select.sh` (see caveat below) |
-| JetBrainsMono Nerd Font | `ttf-jetbrains-mono-nerd` | `waybar/.config/waybar/style.css:5`, `rofi/.config/rofi/config.rasi:5` |
+| Command / thing         | Arch package              | Referenced by                                                                                                     |
+| ----------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `checkupdates`          | `pacman-contrib`          | `waybar/.config/waybar/config` `custom/pacman`                                                                    |
+| `yay`                   | `yay` (AUR)               | `waybar/.config/waybar/config` `custom/pacman` on-click; `yay/` package                                           |
+| `kitty`                 | `kitty`                   | `waybar/.config/waybar/config` network + pacman on-click (hardcoded, even though the session terminal is Ghostty) |
+| `hyprpicker`            | `hyprpicker`              | `waybar/.config/waybar/scripts/colorpicker.sh`                                                                    |
+| `wl-copy`               | `wl-clipboard`            | `waybar/.config/waybar/scripts/colorpicker.sh`                                                                    |
+| `notify-send`           | `libnotify`               | `waybar/.config/waybar/scripts/colorpicker.sh`                                                                    |
+| JetBrainsMono Nerd Font | `ttf-jetbrains-mono-nerd` | `waybar/.config/waybar/style.css:5`, `rofi/.config/rofi/config.rasi:5`                                            |
 
 ### Required by the shell
 
-| Command / thing | Arch package | Referenced by |
-| --- | --- | --- |
-| `zsh` | `zsh` | `zshrc/.zshrc`; `tmux/.tmux.conf` hardcodes `/usr/bin/zsh` |
-| zsh-syntax-highlighting | `zsh-syntax-highlighting` | `zshrc/.zshrc:26` (loads from `/usr/share/zsh/plugins/`) |
-| zsh-autosuggestions | `zsh-autosuggestions` | `zshrc/.zshrc:27` (same path) |
-| `starship` | `starship` | `zshrc/.zshrc:29` |
-| `nvim` | `neovim` | `zshrc/.zshrc:1` (`EDITOR`) |
-| `fd` | `fd` | `zshrc/.zshrc:41` (`FZF_DEFAULT_COMMAND`) |
-| `figlet` | `figlet` | `config/.config/scripts/term-startup.sh` |
-| `fastfetch` | `fastfetch` | `config/.config/scripts/term-startup.sh` |
-| `tmux` | `tmux` | `tmux/.tmux.conf` |
-| tpm | clone to `~/.tmux/plugins/tpm` | `tmux/.tmux.conf:4` declares it, `tmux/.tmux.conf:64` runs it — plugin manager, loads tmux-resurrect and tmux-continuum |
-| pywal | `python-pywal` | `zshrc/.zshrc:51` reads `~/.cache/wal/sequences`; `wal/` package holds its templates |
-| `convert` | `imagemagick` | required by `config/.config/scripts/wal` (a vendored copy of the pywal shell script) |
+| Command / thing         | Arch package                   | Referenced by                                                                                                           |
+| ----------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `zsh`                   | `zsh`                          | `zshrc/.zshrc`; `tmux/.tmux.conf` hardcodes `/usr/bin/zsh`                                                              |
+| zsh-syntax-highlighting | `zsh-syntax-highlighting`      | `zshrc/.zshrc:26` (loads from `/usr/share/zsh/plugins/`)                                                                |
+| zsh-autosuggestions     | `zsh-autosuggestions`          | `zshrc/.zshrc:27` (same path)                                                                                           |
+| `starship`              | `starship`                     | `zshrc/.zshrc:29`                                                                                                       |
+| `nvim`                  | `neovim`                       | `zshrc/.zshrc:1` (`EDITOR`)                                                                                             |
+| `fd`                    | `fd`                           | `zshrc/.zshrc:41` (`FZF_DEFAULT_COMMAND`)                                                                               |
+| `figlet`                | `figlet`                       | `config/.config/scripts/term-startup.sh`                                                                                |
+| `fastfetch`             | `fastfetch`                    | `config/.config/scripts/term-startup.sh`                                                                                |
+| `tmux`                  | `tmux`                         | `tmux/.tmux.conf`                                                                                                       |
+| tpm                     | clone to `~/.tmux/plugins/tpm` | `tmux/.tmux.conf:4` declares it, `tmux/.tmux.conf:64` runs it — plugin manager, loads tmux-resurrect and tmux-continuum |
+| pywal                   | `python-pywal`                 | `zshrc/.zshrc:51` reads `~/.cache/wal/sequences`; `wal/` package holds its templates                                    |
+| `convert`               | `imagemagick`                  | required by `config/.config/scripts/wal` (a vendored copy of the pywal shell script)                                    |
 
 `zshrc/.zshrc` also puts `bun`, `nvm`, `pnpm`, `flyctl`, and `opencode` on `PATH`.
 Those are optional developer tools; their `source` lines are guarded with
@@ -189,18 +188,15 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
     With the file absent rofi falls back to its built-in theme and the launcher
     still opens. It does not warn: `rofi -config <config.rasi> -dump-theme`
     exits 0 with empty stderr. Note for anyone testing rofi theming, here or
-    elsewhere: rofi exits 0 on a theme *parse failure* too, so empty stderr is
+    elsewhere: rofi exits 0 on a theme _parse failure_ too, so empty stderr is
     the only usable success criterion.
   - `~/.config/starship.toml` is generated too. Without it, starship uses its
     own defaults.
+
 - **`~/.config/hypr/scripts/xdg.sh` does not exist.**
   `hyprland/.config/hypr/conf/autostart.conf:8` runs it on every login. It was
   never committed. Its stated job was XDG desktop portal setup for screen
   sharing.
-- **`waybar/.config/waybar/scripts/select.sh` points at wofi configs that are
-  not in this repo.** It calls
-  `wofi -c ~/.config/wofi/waybar -s ~/.config/wofi/style-waybar.css`. The `wofi`
-  package only ships `wofi/.config/wofi/style.css`.
 - **`ghostty/.config/ghostty/config` does not `include` `theme.conf`.** The
   switcher writes the file; Ghostty never reads it. See
   [packages.md](packages.md).

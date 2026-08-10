@@ -28,24 +28,23 @@ Two directories are **not** stow packages: `scripts/` and `docs/`.
 
 ## Packages
 
-| Package      | Configures                             | Lands at                  |
-| ------------ | -------------------------------------- | ------------------------- |
+| Package      | Configures                                            | Lands at                                                     |
+| ------------ | ----------------------------------------------------- | ------------------------------------------------------------ |
 | `config`     | shared helper scripts, rofi snippets, wallpaper cache | `~/.config/scripts`, `~/.config/settings`, `~/.config/cache` |
-| `ghostty`    | Ghostty terminal                       | `~/.config/ghostty`       |
-| `gtk-3.0`    | GTK 3 theme/font settings              | `~/.config/gtk-3.0/settings.ini` |
-| `hyprland`   | Hyprland, hypridle, hyprlock, hyprpaper | `~/.config/hypr`         |
-| `hyprshade`  | hyprshade blue-light schedule          | `~/.config/hyprshade`     |
-| `nvim`       | Neovim (**git submodule**)             | `~/.config/nvim`          |
-| `rofi`       | Rofi launcher                          | `~/.config/rofi`          |
-| `swaync`     | SwayNotificationCenter                 | `~/.config/swaync`        |
-| `themes`     | colour palettes for the theme switcher | `~/.config/themes`        |
-| `tmux`       | tmux                                   | `~/.tmux.conf`            |
-| `wal`        | pywal templates and colorschemes       | `~/.config/wal`           |
-| `wallpapers` | wallpaper images (~57 MB)              | `~/.config/wallpapers`    |
-| `waybar`     | Waybar status bar                      | `~/.config/waybar`        |
-| `wofi`       | Wofi menu styling                      | `~/.config/wofi`          |
-| `yay`        | yay AUR helper                         | `~/.config/yay`           |
-| `zshrc`      | Zsh                                    | `~/.zshrc`                |
+| `ghostty`    | Ghostty terminal                                      | `~/.config/ghostty`                                          |
+| `gtk-3.0`    | GTK 3 theme/font settings                             | `~/.config/gtk-3.0/settings.ini`                             |
+| `hyprland`   | Hyprland, hypridle, hyprlock, hyprpaper               | `~/.config/hypr`                                             |
+| `hyprshade`  | hyprshade blue-light schedule                         | `~/.config/hyprshade`                                        |
+| `nvim`       | Neovim (**git submodule**)                            | `~/.config/nvim`                                             |
+| `rofi`       | Rofi launcher                                         | `~/.config/rofi`                                             |
+| `swaync`     | SwayNotificationCenter                                | `~/.config/swaync`                                           |
+| `themes`     | colour palettes for the theme switcher                | `~/.config/themes`                                           |
+| `tmux`       | tmux                                                  | `~/.tmux.conf`                                               |
+| `wal`        | pywal templates and colorschemes                      | `~/.config/wal`                                              |
+| `wallpapers` | wallpaper images (~57 MB)                             | `~/.config/wallpapers`                                       |
+| `waybar`     | Waybar status bar                                     | `~/.config/waybar`                                           |
+| `yay`        | yay AUR helper                                        | `~/.config/yay`                                              |
+| `zshrc`      | Zsh                                                   | `~/.zshrc`                                                   |
 
 Per-package detail, including which files are generated rather than authored:
 [docs/packages.md](docs/packages.md).
@@ -61,7 +60,7 @@ Short version:
 git clone --recurse-submodules <this-repo> ~/dotfiles
 cd ~/dotfiles
 stow -t "$HOME" hyprland waybar rofi ghostty swaync themes config \
-                gtk-3.0 hyprshade tmux wal wallpapers wofi yay zshrc nvim
+                gtk-3.0 hyprshade tmux wal wallpapers yay zshrc nvim
 ```
 
 `stow` defaults its target to the parent of the repo directory. Cloning to

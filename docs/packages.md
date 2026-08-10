@@ -20,22 +20,22 @@ run from the repo, not from `$HOME`.
 
 Shared helpers that are not tied to one program.
 
-| File | What it does |
-| --- | --- |
-| `scripts/term-startup.sh` | Runs `figlet qdrtech` then `fastfetch`. Called from `zshrc/.zshrc:10`. |
-| `scripts/import-gsettings.sh` | Reads `gtk-3.0/settings.ini` and pushes theme/icon/cursor/font into `org.gnome.desktop.interface` via `gsettings`. Run on login from `hyprland/.config/hypr/conf/autostart.conf:11`. |
-| `scripts/git-prune.sh` | `git fetch --prune`, then interactively deletes local branches whose upstream is gone. Aliased to `gitprune`. |
-| `scripts/docker-login-ecr.sh` | Work-specific AWS ECR login. Aliased to `dle`. Not generally useful. |
-| `scripts/wal` | A vendored copy of the pywal shell script (`wal`) by Dylan Araps. Requires ImageMagick's `convert`. |
-| `settings/rofi-border.rasi`, `rofi-border-radius.rasi`, `rofi-font.rasi` | One-line rofi settings fragments. Nothing in this repo imports them. |
-| `cache/blurred_wallpaper.png` | Lock screen background. Read by `hyprland/.config/hypr/hyprlock.conf:15`. |
-| `cache/current_wallpaper`, `cache/current_wallpaper.rasi` | Wallpaper path record and a rofi snippet that points at `blurred_wallpaper.png`. |
+| File                                                                     | What it does                                                                                                                                                                         |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `scripts/term-startup.sh`                                                | Runs `figlet qdrtech` then `fastfetch`. Called from `zshrc/.zshrc:10`.                                                                                                               |
+| `scripts/import-gsettings.sh`                                            | Reads `gtk-3.0/settings.ini` and pushes theme/icon/cursor/font into `org.gnome.desktop.interface` via `gsettings`. Run on login from `hyprland/.config/hypr/conf/autostart.conf:11`. |
+| `scripts/git-prune.sh`                                                   | `git fetch --prune`, then interactively deletes local branches whose upstream is gone. Aliased to `gitprune`.                                                                        |
+| `scripts/docker-login-ecr.sh`                                            | Work-specific AWS ECR login. Aliased to `dle`. Not generally useful.                                                                                                                 |
+| `scripts/wal`                                                            | A vendored copy of the pywal shell script (`wal`) by Dylan Araps. Requires ImageMagick's `convert`.                                                                                  |
+| `settings/rofi-border.rasi`, `rofi-border-radius.rasi`, `rofi-font.rasi` | One-line rofi settings fragments. Nothing in this repo imports them.                                                                                                                 |
+| `cache/blurred_wallpaper.png`                                            | Lock screen background. Read by `hyprland/.config/hypr/hyprlock.conf:15`.                                                                                                            |
+| `cache/current_wallpaper`, `cache/current_wallpaper.rasi`                | Wallpaper path record and a rofi snippet that points at `blurred_wallpaper.png`.                                                                                                     |
 
 `~/.config/scripts` is on `PATH` (`zshrc/.zshrc:42`).
 
 Note: `config/.config/base` is not in this repo, and `~/.config/base` does not
-exist on the reference machine either — `ls -ld` reports *No such file or
-directory*, so there is no dangling symlink to clean up. Only the removed
+exist on the reference machine either — `ls -ld` reports _No such file or
+directory_, so there is no dangling symlink to clean up. Only the removed
 file-first theme switcher ever referenced the path.
 
 ---
@@ -44,9 +44,9 @@ file-first theme switcher ever referenced the path.
 
 **Target:** `~/.config/ghostty`
 
-| File | What it does |
-| --- | --- |
-| `config` | Ghostty settings: `.SF NS Mono` at 14pt, ligatures, 10px horizontal padding, `background-blur-radius = 20`, `background-opacity = 0.2`, GTK titlebar, sudo shell integration. |
+| File         | What it does                                                                                                                                                                                                   |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config`     | Ghostty settings: `.SF NS Mono` at 14pt, ligatures, 10px horizontal padding, `background-blur-radius = 20`, `background-opacity = 0.2`, GTK titlebar, sudo shell integration.                                  |
 | `theme.conf` | **Generated**, not authored. Written by `scripts/theme-switch.sh`. `~/.config/ghostty` is a folded symlink into this repo, so the switcher writes straight into the working tree; the path is in `.gitignore`. |
 
 `config` does **not** `include` `theme.conf`. As committed, Ghostty never reads
@@ -83,21 +83,21 @@ Source order (`hyprland.conf:22-41`): `theme-colors.conf` (generated), then
 `layout`, `misc`, `keyboard`, `keybinding`, `layerrule`, `window`, `windowrule`,
 `workspace` — and `conf/theme.conf` **last**, so styling overrides the base.
 
-| File | Notes |
-| --- | --- |
-| `conf/monitors.conf` | `DP-1` at 3840x2160@240.02 scaled 1.25; `DP-2` preferred, rotated (`transform, 1`). Machine specific. |
-| `conf/workspace.conf` | Workspaces 1-4 pinned to `DP-1`, 5-8 to `DP-2`. Machine specific. |
-| `conf/keybinding.conf` | `SUPER` is the modifier. `SUPER+Return` terminal, `SUPER+Space` launcher, `SUPER+C` kill, `SUPER+E` files, `SUPER+H/J/K/L` focus (mapped left/right/up/down in that order), `Home` / `Shift+Home` screenshot, `SUPER+Shift+L` lock. |
-| `conf/keyboard.conf` | US layout, `ctrl:nocaps`, natural scroll off. |
-| `conf/autostart.conf` | Runs `~/.config/hypr/scripts/xdg.sh` (**missing from this repo**), import-gsettings, Waybar launch, hypridle, `hyprshade auto`, nm-applet, hyprpaper, blueman-applet. |
-| `conf/theme.conf` | Styling only. Consumes `$bg $surface $surface_alt $fg $fg_muted $accent $accent_alt $warn $error $success` from the generated `theme-colors.conf`. Blur and shadow are off. |
-| `conf/window.conf` | dwindle layout, gaps 10/14, border 3. Its `general {}` block is overridden by `conf/theme.conf` because that is sourced later. |
-| `conf/environment.conf` | Empty file. |
-| `conf/layerrule.conf`, `conf/windowrule.conf` | Fully commented out. |
-| `hypridle.conf` | Lock at 600s, DPMS off at 660s, `systemctl suspend` at 1800s. |
-| `hyprlock.conf` | Background is `~/.config/cache/blurred_wallpaper.png`. Input field pinned to `DP-1`. Clock label uses the `Fira Semibold` font. |
-| `hyprpaper.conf` | Same wallpaper on `DP-1` and `DP-2`, `fit_mode = cover`. |
-| `scripts/hyprpaper.sh` | `killall hyprpaper` then restart. Bound to `SUPER+Shift+P`. |
+| File                                          | Notes                                                                                                                                                                                                                               |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `conf/monitors.conf`                          | `DP-1` at 3840x2160@240.02 scaled 1.25; `DP-2` preferred, rotated (`transform, 1`). Machine specific.                                                                                                                               |
+| `conf/workspace.conf`                         | Workspaces 1-4 pinned to `DP-1`, 5-8 to `DP-2`. Machine specific.                                                                                                                                                                   |
+| `conf/keybinding.conf`                        | `SUPER` is the modifier. `SUPER+Return` terminal, `SUPER+Space` launcher, `SUPER+C` kill, `SUPER+E` files, `SUPER+H/J/K/L` focus (mapped left/right/up/down in that order), `Home` / `Shift+Home` screenshot, `SUPER+Shift+L` lock. |
+| `conf/keyboard.conf`                          | US layout, `ctrl:nocaps`, natural scroll off.                                                                                                                                                                                       |
+| `conf/autostart.conf`                         | Runs `~/.config/hypr/scripts/xdg.sh` (**missing from this repo**), import-gsettings, Waybar launch, hypridle, `hyprshade auto`, nm-applet, hyprpaper, blueman-applet.                                                               |
+| `conf/theme.conf`                             | Styling only. Consumes `$bg $surface $surface_alt $fg $fg_muted $accent $accent_alt $warn $error $success` from the generated `theme-colors.conf`. Blur and shadow are off.                                                         |
+| `conf/window.conf`                            | dwindle layout, gaps 10/14, border 3. Its `general {}` block is overridden by `conf/theme.conf` because that is sourced later.                                                                                                      |
+| `conf/environment.conf`                       | Empty file.                                                                                                                                                                                                                         |
+| `conf/layerrule.conf`, `conf/windowrule.conf` | Fully commented out.                                                                                                                                                                                                                |
+| `hypridle.conf`                               | Lock at 600s, DPMS off at 660s, `systemctl suspend` at 1800s.                                                                                                                                                                       |
+| `hyprlock.conf`                               | Background is `~/.config/cache/blurred_wallpaper.png`. Input field pinned to `DP-1`. Clock label uses the `Fira Semibold` font.                                                                                                     |
+| `hyprpaper.conf`                              | Same wallpaper on `DP-1` and `DP-2`, `fit_mode = cover`.                                                                                                                                                                            |
+| `scripts/hyprpaper.sh`                        | `killall hyprpaper` then restart. Bound to `SUPER+Shift+P`.                                                                                                                                                                         |
 
 `~/.config/hypr/theme-colors.conf` is generated by the theme switcher and is not
 tracked here.
@@ -127,11 +127,11 @@ commit a submodule pointer change unless you mean to.
 
 **Target:** `~/.config/rofi`
 
-| File | What it does |
-| --- | --- |
-| `config.rasi` | Launcher config and full widget styling. Line 9 loads the generated theme with `@theme "generated-theme.rasi"`; rofi resolves an `@import`/`@theme` filename against the directory of the including file. |
-| `theme-colors.rasi` | **Generated** by `scripts/theme-switch.sh`. The palette, as a `* { }` block. Imported by `generated-theme.rasi`. |
-| `generated-theme.rasi` | **Generated** by `scripts/theme-switch.sh`. Widget styling built from the palette. |
+| File                   | What it does                                                                                                                                                                                              |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config.rasi`          | Launcher config and full widget styling. Line 9 loads the generated theme with `@theme "generated-theme.rasi"`; rofi resolves an `@import`/`@theme` filename against the directory of the including file. |
+| `theme-colors.rasi`    | **Generated** by `scripts/theme-switch.sh`. The palette, as a `* { }` block. Imported by `generated-theme.rasi`.                                                                                          |
+| `generated-theme.rasi` | **Generated** by `scripts/theme-switch.sh`. Widget styling built from the palette.                                                                                                                        |
 
 Both generated files are in `.gitignore`; `~/.config/rofi` is a folded symlink
 into this repo, so the switcher writes straight into the working tree. Run
@@ -150,12 +150,12 @@ currently imports.
 
 **Target:** `~/.config/swaync`
 
-| File | What it does |
-| --- | --- |
-| `config.json` | SwayNC behaviour. |
-| `style.css` | Real stylesheet. First line is `@import url("theme-colors.css")`, so it depends on the generated file existing. Uses `@bg`, `@surface`, `@surface-alt`, `@text`, `@text-muted`, `@accent` and `@error`. |
-| `theme-colors.css` | **Generated** by `scripts/theme-switch.sh`, and in `.gitignore` for the same folded-symlink reason as Ghostty's `theme.conf`. |
-| `refresh.sh` | `pkill swaync; swaync`. |
+| File               | What it does                                                                                                                                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config.json`      | SwayNC behaviour.                                                                                                                                                                                       |
+| `style.css`        | Real stylesheet. First line is `@import url("theme-colors.css")`, so it depends on the generated file existing. Uses `@bg`, `@surface`, `@surface-alt`, `@text`, `@text-muted`, `@accent` and `@error`. |
+| `theme-colors.css` | **Generated** by `scripts/theme-switch.sh`, and in `.gitignore` for the same folded-symlink reason as Ghostty's `theme.conf`.                                                                           |
+| `refresh.sh`       | `pkill swaync; swaync`.                                                                                                                                                                                 |
 
 Waybar's `custom/notification` module toggles the panel via `swaync-client -t -sw`.
 
@@ -225,32 +225,20 @@ OSC 11/17/19/708 so the opaque background does not override Ghostty's
 
 **Target:** `~/.config/waybar`
 
-| File | What it does |
-| --- | --- |
-| `config` | Top bar. Left: notifications, clock, pacman updates, tray. Center: Hyprland workspaces. Right: an expanding drawer group with colour picker, CPU, memory, temperature, bluetooth, network. |
-| `style.css` | Real stylesheet. First line is `@import url("theme-colors.css")`, so it depends on the generated file existing. Uses `@bg`, `@surface`, `@text` from the switcher and `@color9` from pywal. |
-| `scripts/launch.sh` | `killall waybar`, then start it. Branches on `$USER = qdrtech`. Bound to `SUPER+Shift+B`. |
-| `scripts/refresh.sh` | Toggle: kill if running, start if not. |
-| `scripts/colorpicker.sh` | `hyprpicker` + `wl-copy`, keeps a 10-entry history in `~/.cache/colorpicker/colors`, and emits waybar JSON with `-j`. |
-| `scripts/select.sh` | Bar-theme picker. Copies one of `themes/<name>/` over `style.css` and `config`, then restarts waybar. **Its wofi config paths are not in this repo.** |
-| `themes/{default,experimental,line,zen}/` | Four alternative bar layouts + stylesheets, used only by `select.sh`. |
-| `assets/*.png` | Preview thumbnails for `select.sh`. |
+| File                     | What it does                                                                                                                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config`                 | Top bar. Left: notifications, clock, pacman updates, tray. Center: Hyprland workspaces. Right: an expanding drawer group with colour picker, CPU, memory, temperature, bluetooth, network.  |
+| `style.css`              | Real stylesheet. First line is `@import url("theme-colors.css")`, so it depends on the generated file existing. Uses `@bg`, `@surface`, `@text` from the switcher and `@color9` from pywal. |
+| `scripts/launch.sh`      | `killall waybar`, then start it. Branches on `$USER = qdrtech`. Bound to `SUPER+Shift+B`.                                                                                                   |
+| `scripts/refresh.sh`     | Toggle: kill if running, start if not.                                                                                                                                                      |
+| `scripts/colorpicker.sh` | `hyprpicker` + `wl-copy`, keeps a 10-entry history in `~/.cache/colorpicker/colors`, and emits waybar JSON with `-j`.                                                                       |
 
 `~/.config/waybar/theme-colors.css` is generated and not tracked.
 
-Note: `scripts/select.sh` overwrites `style.css` in place. Since the package is
-stowed, that writes into this repo.
-
----
-
-## `wofi`
-
-**Target:** `~/.config/wofi`
-
-One file, `style.css`, a Catppuccin Mocha `@define-color` palette. Nothing in the
-active config launches wofi except `waybar/.config/waybar/scripts/select.sh`, and that asks for
-`~/.config/wofi/waybar` and `~/.config/wofi/style-waybar.css`, neither of which
-exists here. The launcher bound to `SUPER+Space` is rofi.
+`themes/{default,experimental,line,zen}/` (four `config-<name>` / `style-<name>.css`
+pairs) and `assets/*.png` are still in the package but unused — they existed only
+for the bar-theme picker removed in #44. Applying one is a manual copy of the pair
+over `config` and `style.css`.
 
 ---
 
