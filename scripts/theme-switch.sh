@@ -268,7 +268,14 @@ write_starship() {
   # The file-first switcher symlinked the theme's own starship.toml here. The
   # palette-first equivalent generates it, so back up an authored config once
   # before the first overwrite.
-  if [ -f "$STARSHIP_OUT" ] && [ ! -L "$STARSHIP_OUT" ] \
+  # Guard on existence rather than "regular file that is not a symlink": the old
+  # test skipped the backup in exactly the cases that need it. A symlinked
+  # starship.toml (what the file-first switcher left behind) failed "! -L", and a
+  # stowed one would pass "-f" through the link while still failing "! -L" -- in
+  # both cases the write below replaces the link with no copy taken. "-e"
+  # follows the link, so it is true whenever there is content to preserve and
+  # false for a dangling link, which has none.
+  if [ -e "$STARSHIP_OUT" ] \
      && ! head -n 1 "$STARSHIP_OUT" | grep -q "$GENERATED_MARKER"; then
     local backup="${STARSHIP_OUT}.backup-$(date +%Y%m%d-%H%M%S)"
     cp "$STARSHIP_OUT" "$backup"
