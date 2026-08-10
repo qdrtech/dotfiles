@@ -33,9 +33,10 @@ Shared helpers that are not tied to one program.
 
 `~/.config/scripts` is on `PATH` (`zshrc/.zshrc:42`).
 
-Note: `~/.config/base` exists on the reference machine as a dangling symlink to
-`config/.config/base`, which is not in this repo. Only the removed file-first
-theme switcher referenced it, so it can be deleted.
+Note: `config/.config/base` is not in this repo, and `~/.config/base` does not
+exist on the reference machine either — `ls -ld` reports *No such file or
+directory*, so there is no dangling symlink to clean up. Only the removed
+file-first theme switcher ever referenced the path.
 
 ---
 

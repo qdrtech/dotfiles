@@ -186,8 +186,11 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   - `swaync/.config/swaync/style.css:1` does the same with
     `~/.config/swaync/theme-colors.css`.
   - `rofi/.config/rofi/config.rasi:9` points `@theme` at `generated-theme.rasi`.
-    With the file absent rofi warns and falls back to its built-in theme; the
-    launcher still opens.
+    With the file absent rofi falls back to its built-in theme and the launcher
+    still opens. It does not warn: `rofi -config <config.rasi> -dump-theme`
+    exits 0 with empty stderr. Note for anyone testing rofi theming, here or
+    elsewhere: rofi exits 0 on a theme *parse failure* too, so empty stderr is
+    the only usable success criterion.
   - `~/.config/starship.toml` is generated too. Without it, starship uses its
     own defaults.
 - **`~/.config/hypr/scripts/xdg.sh` does not exist.**

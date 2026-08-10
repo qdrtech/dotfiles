@@ -187,17 +187,17 @@ Deployed state that predates this switcher and is not recreated:
   symlinks from an older stow run. `default` now dangles and can be deleted.
 - `~/.config/hypr/theme.conf` — a stray copy at the `hypr` root rather than in
   `conf/`. Nothing sources it; `hyprland.conf:41` sources `conf/theme.conf`.
-- `~/.config/base` — dangling; only the removed file-first switcher used it.
-- `~/.config/hypr/mocha.conf` — dangling since the `hyprmocha` package was
-  deleted in `5a2c847`. Nothing sources it.
-- `~/hyprland.conf` — dangling since the stub at the `hyprland` package root was
-  deleted. Nothing sources it.
 
 Safe to delete:
 
 ```sh
-rm ~/.config/themes/default ~/.config/hypr/mocha.conf ~/hyprland.conf
+rm ~/.config/themes/default
 ```
+
+`~/.config/base`, `~/.config/hypr/mocha.conf` and `~/hyprland.conf` were listed
+here as dangling links in earlier revisions of this doc. They are absent
+entirely — `ls -ld` reports *No such file or directory*, which a dangling
+symlink would not — so there is nothing left to remove.
 
 ## Design specs
 
