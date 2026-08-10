@@ -1,3 +1,12 @@
+> **Superseded — do not follow these instructions.**
+> This file documents the older, file-first theme switcher
+> (`config/.config/scripts/theme-switch.sh`). That switcher is no longer the
+> intended design, and running it on a working setup overwrites tracked files
+> and breaks the generated-colour pipeline. It is kept for history only.
+>
+> For what actually happens today, read `docs/theme-switching.md` in the
+> dotfiles repo. Where the two disagree, that file is the accurate one.
+
 # Hyprland Theme System
 
 A comprehensive theming system for Hyprland with support for multiple themes and instant switching.
