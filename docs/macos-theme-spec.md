@@ -9,6 +9,7 @@
 ### **Name:** `macos-hyprland`
 
 ### **Design Goals:**
+
 - **Visual Harmony:** Replicate macOS's refined, cohesive aesthetic across all UI components
 - **Subtle Elegance:** Low-contrast, sophisticated color palette with tasteful transparency
 - **Consistency:** Unified design language from window manager to terminal to notifications
@@ -16,6 +17,7 @@
 - **Authenticity:** Use genuine macOS system fonts (SF Pro, SF Mono) where possible
 
 ### **Core Design Principles:**
+
 1. **Translucency & Blur:** Vibrancy effects on panels, menus, and notifications
 2. **Refined Typography:** SF Pro family for UI, SF Mono for code
 3. **Subtle Shadows:** Soft, realistic drop shadows (not harsh glows)
@@ -31,72 +33,72 @@
 
 Based on macOS Sequoia/Sonoma dark appearance:
 
-| Token | Hex | RGB | Usage |
-|-------|-----|-----|-------|
-| **System Backgrounds** | | | |
-| `bg.window` | `#1E1E1E` | (30,30,30) | Main window background |
-| `bg.panel` | `#282828` | (40,40,40) | Panels, sidebars (with blur) |
-| `bg.menu` | `#2D2D2D` | (45,45,45) | Dropdown menus, context menus |
-| `bg.elevated` | `#323232` | (50,50,50) | Elevated surfaces (floating windows) |
-| `bg.header` | `#242424` | (36,36,36) | Title bars, headers |
-| **Text & Content** | | | |
-| `fg.primary` | `#FFFFFF` | (255,255,255) | Primary text (87% opacity) |
-| `fg.secondary` | `#A0A0A0` | (160,160,160) | Secondary text (55% opacity) |
-| `fg.tertiary` | `#6E6E6E` | (110,110,110) | Disabled/tertiary text (25% opacity) |
-| `fg.placeholder` | `#545454` | (84,84,84) | Placeholder text |
-| **Accents** | | | |
-| `accent.blue` | `#0A84FF` | (10,132,255) | Primary system accent |
-| `accent.blue.hover` | `#0070E0` | (0,112,224) | Hover state |
-| `accent.blue.pressed` | `#005CC8` | (0,92,200) | Pressed state |
-| `accent.purple` | `#BF5AF2` | (191,90,242) | Alternative accent |
-| `accent.pink` | `#FF375F` | (255,55,95) | Alerts, destructive |
-| `accent.orange` | `#FF9F0A` | (255,159,10) | Warnings |
-| `accent.yellow` | `#FFD60A` | (255,214,10) | Cautions |
-| `accent.green` | `#32D74B` | (50,215,75) | Success, confirmations |
-| `accent.teal` | `#64D2FF` | (100,210,255) | Info, links |
-| **Semantic Colors** | | | |
-| `semantic.error` | `#FF453A` | (255,69,58) | Errors, failures |
-| `semantic.warning` | `#FFD60A` | (255,214,10) | Warnings |
-| `semantic.success` | `#32D74B` | (50,215,75) | Success states |
-| `semantic.info` | `#64D2FF` | (100,210,255) | Informational |
-| **UI Chrome** | | | |
-| `border.default` | `#3C3C3C` | (60,60,60) | Standard borders |
-| `border.focus` | `#0A84FF` | (10,132,255) | Focused element borders |
-| `separator` | `#414141` | (65,65,65) | Dividers, separators |
-| `shadow` | `#000000` @ 30% | rgba(0,0,0,0.3) | Drop shadows |
+| Token                  | Hex             | RGB             | Usage                                |
+| ---------------------- | --------------- | --------------- | ------------------------------------ |
+| **System Backgrounds** |                 |                 |                                      |
+| `bg.window`            | `#1E1E1E`       | (30,30,30)      | Main window background               |
+| `bg.panel`             | `#282828`       | (40,40,40)      | Panels, sidebars (with blur)         |
+| `bg.menu`              | `#2D2D2D`       | (45,45,45)      | Dropdown menus, context menus        |
+| `bg.elevated`          | `#323232`       | (50,50,50)      | Elevated surfaces (floating windows) |
+| `bg.header`            | `#242424`       | (36,36,36)      | Title bars, headers                  |
+| **Text & Content**     |                 |                 |                                      |
+| `fg.primary`           | `#FFFFFF`       | (255,255,255)   | Primary text (87% opacity)           |
+| `fg.secondary`         | `#A0A0A0`       | (160,160,160)   | Secondary text (55% opacity)         |
+| `fg.tertiary`          | `#6E6E6E`       | (110,110,110)   | Disabled/tertiary text (25% opacity) |
+| `fg.placeholder`       | `#545454`       | (84,84,84)      | Placeholder text                     |
+| **Accents**            |                 |                 |                                      |
+| `accent.blue`          | `#0A84FF`       | (10,132,255)    | Primary system accent                |
+| `accent.blue.hover`    | `#0070E0`       | (0,112,224)     | Hover state                          |
+| `accent.blue.pressed`  | `#005CC8`       | (0,92,200)      | Pressed state                        |
+| `accent.purple`        | `#BF5AF2`       | (191,90,242)    | Alternative accent                   |
+| `accent.pink`          | `#FF375F`       | (255,55,95)     | Alerts, destructive                  |
+| `accent.orange`        | `#FF9F0A`       | (255,159,10)    | Warnings                             |
+| `accent.yellow`        | `#FFD60A`       | (255,214,10)    | Cautions                             |
+| `accent.green`         | `#32D74B`       | (50,215,75)     | Success, confirmations               |
+| `accent.teal`          | `#64D2FF`       | (100,210,255)   | Info, links                          |
+| **Semantic Colors**    |                 |                 |                                      |
+| `semantic.error`       | `#FF453A`       | (255,69,58)     | Errors, failures                     |
+| `semantic.warning`     | `#FFD60A`       | (255,214,10)    | Warnings                             |
+| `semantic.success`     | `#32D74B`       | (50,215,75)     | Success states                       |
+| `semantic.info`        | `#64D2FF`       | (100,210,255)   | Informational                        |
+| **UI Chrome**          |                 |                 |                                      |
+| `border.default`       | `#3C3C3C`       | (60,60,60)      | Standard borders                     |
+| `border.focus`         | `#0A84FF`       | (10,132,255)    | Focused element borders              |
+| `separator`            | `#414141`       | (65,65,65)      | Dividers, separators                 |
+| `shadow`               | `#000000` @ 30% | rgba(0,0,0,0.3) | Drop shadows                         |
 
 ### **2.2 Light Mode (Secondary)**
 
 Based on macOS light appearance:
 
-| Token | Hex | RGB | Usage |
-|-------|-----|-----|-------|
-| **System Backgrounds** | | | |
-| `bg.window` | `#FFFFFF` | (255,255,255) | Main window background |
-| `bg.panel` | `#F5F5F5` | (245,245,245) | Panels, sidebars (with blur) |
-| `bg.menu` | `#FCFCFC` | (252,252,252) | Dropdown menus |
-| `bg.elevated` | `#FAFAFA` | (250,250,250) | Elevated surfaces |
-| `bg.header` | `#EBEBEB` | (235,235,235) | Title bars |
-| **Text & Content** | | | |
-| `fg.primary` | `#000000` | (0,0,0) | Primary text (87% opacity) |
-| `fg.secondary` | `#3C3C43` | (60,60,67) | Secondary text (60% opacity) |
-| `fg.tertiary` | `#8E8E93` | (142,142,147) | Tertiary text (30% opacity) |
-| **Accents** | | | |
-| `accent.blue` | `#007AFF` | (0,122,255) | Primary system accent |
-| `accent.blue.hover` | `#0051D5` | (0,81,213) | Hover state |
-| `accent.green` | `#34C759` | (52,199,89) | Success |
-| `semantic.error` | `#FF3B30` | (255,59,48) | Errors |
+| Token                  | Hex       | RGB           | Usage                        |
+| ---------------------- | --------- | ------------- | ---------------------------- |
+| **System Backgrounds** |           |               |                              |
+| `bg.window`            | `#FFFFFF` | (255,255,255) | Main window background       |
+| `bg.panel`             | `#F5F5F5` | (245,245,245) | Panels, sidebars (with blur) |
+| `bg.menu`              | `#FCFCFC` | (252,252,252) | Dropdown menus               |
+| `bg.elevated`          | `#FAFAFA` | (250,250,250) | Elevated surfaces            |
+| `bg.header`            | `#EBEBEB` | (235,235,235) | Title bars                   |
+| **Text & Content**     |           |               |                              |
+| `fg.primary`           | `#000000` | (0,0,0)       | Primary text (87% opacity)   |
+| `fg.secondary`         | `#3C3C43` | (60,60,67)    | Secondary text (60% opacity) |
+| `fg.tertiary`          | `#8E8E93` | (142,142,147) | Tertiary text (30% opacity)  |
+| **Accents**            |           |               |                              |
+| `accent.blue`          | `#007AFF` | (0,122,255)   | Primary system accent        |
+| `accent.blue.hover`    | `#0051D5` | (0,81,213)    | Hover state                  |
+| `accent.green`         | `#34C759` | (52,199,89)   | Success                      |
+| `semantic.error`       | `#FF3B30` | (255,59,48)   | Errors                       |
 
 ### **2.3 Transparency & Blur Values**
 
-| Surface | Opacity | Blur Radius | Usage |
-|---------|---------|-------------|-------|
-| Window backgrounds | 95% | 0px | Solid content areas |
-| Panels (waybar, sidebar) | 70% | 20px | Toolbars, status bars |
-| Menus (rofi, wofi) | 75% | 30px | Dropdowns, launchers |
-| Notifications | 80% | 25px | SwayNC notifications |
-| Tooltips | 90% | 15px | Hover tooltips |
-| Inactive windows | 90% | 0px | Background windows |
+| Surface                  | Opacity | Blur Radius | Usage                 |
+| ------------------------ | ------- | ----------- | --------------------- |
+| Window backgrounds       | 95%     | 0px         | Solid content areas   |
+| Panels (waybar, sidebar) | 70%     | 20px        | Toolbars, status bars |
+| Menus (rofi)             | 75%     | 30px        | Dropdowns, launchers  |
+| Notifications            | 80%     | 25px        | SwayNC notifications  |
+| Tooltips                 | 90%     | 15px        | Hover tooltips        |
+| Inactive windows         | 90%     | 0px         | Background windows    |
 
 ---
 
@@ -105,6 +107,7 @@ Based on macOS light appearance:
 ### **3.1 Font Families**
 
 **Primary (UI):**
+
 ```
 SF Pro Display (Headings, Titles)
 SF Pro Text (Body Text, UI Labels)
@@ -112,6 +115,7 @@ SF Pro Rounded (Optional alternative for friendly UI)
 ```
 
 **Monospace (Code/Terminal):**
+
 ```
 .SF NS Mono (Primary — already configured)
 SF Mono (Alternative naming)
@@ -119,9 +123,16 @@ Menlo (Fallback)
 ```
 
 **Fallback Stack:**
+
 ```css
 /* UI */
-font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+font-family:
+  "SF Pro Text",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Roboto,
+  sans-serif;
 
 /* Monospace */
 font-family: ".SF NS Mono", "SF Mono", "Menlo", "Consolas", monospace;
@@ -129,16 +140,16 @@ font-family: ".SF NS Mono", "SF Mono", "Menlo", "Consolas", monospace;
 
 ### **3.2 Type Scale**
 
-| Use Case | Font | Size | Weight | Line Height |
-|----------|------|------|--------|-------------|
-| **Waybar modules** | SF Pro Text | 13px | 500 (Medium) | 1.2 |
-| **Rofi entries** | SF Pro Text | 14px | 400 (Regular) | 1.4 |
-| **Rofi selected** | SF Pro Text | 14px | 600 (Semibold) | 1.4 |
-| **Notifications title** | SF Pro Display | 15px | 600 (Semibold) | 1.3 |
-| **Notifications body** | SF Pro Text | 13px | 400 (Regular) | 1.5 |
-| **Terminal** | .SF NS Mono | 14px | 400 (Regular) | 1.4 |
-| **Menu items** | SF Pro Text | 13px | 400 (Regular) | 1.4 |
-| **Tooltips** | SF Pro Text | 12px | 400 (Regular) | 1.3 |
+| Use Case                | Font           | Size | Weight         | Line Height |
+| ----------------------- | -------------- | ---- | -------------- | ----------- |
+| **Waybar modules**      | SF Pro Text    | 13px | 500 (Medium)   | 1.2         |
+| **Rofi entries**        | SF Pro Text    | 14px | 400 (Regular)  | 1.4         |
+| **Rofi selected**       | SF Pro Text    | 14px | 600 (Semibold) | 1.4         |
+| **Notifications title** | SF Pro Display | 15px | 600 (Semibold) | 1.3         |
+| **Notifications body**  | SF Pro Text    | 13px | 400 (Regular)  | 1.5         |
+| **Terminal**            | .SF NS Mono    | 14px | 400 (Regular)  | 1.4         |
+| **Menu items**          | SF Pro Text    | 13px | 400 (Regular)  | 1.4         |
+| **Tooltips**            | SF Pro Text    | 12px | 400 (Regular)  | 1.3         |
 
 ### **3.3 Font Features**
 
@@ -146,13 +157,14 @@ Enable OpenType features for enhanced rendering:
 
 ```css
 font-feature-settings:
-  "calt" 1,  /* Contextual alternates */
-  "liga" 1,  /* Ligatures */
-  "kern" 1,  /* Kerning */
-  "tnum" 0;  /* Proportional numerals (not tabular) */
+  "calt" 1,
+  /* Contextual alternates */ "liga" 1,
+  /* Ligatures */ "kern" 1,
+  /* Kerning */ "tnum" 0; /* Proportional numerals (not tabular) */
 ```
 
 For monospace fonts (terminal):
+
 ```
 font-feature-settings:
   "calt" 1,  /* Contextual alternates */
@@ -169,6 +181,7 @@ font-feature-settings:
 **File:** `~/.config/hypr/conf/decoration.conf`
 
 **Visual Properties:**
+
 - **Border radius:** 12px (macOS window corners)
 - **Border width:** 2px
 - **Border colors:**
@@ -197,6 +210,7 @@ font-feature-settings:
   - Fullscreen: 1.0
 
 **Animations:**
+
 - Bezier curves: `easeOutExpo` (0.16, 1, 0.3, 1) — macOS-style smooth easing
 - Window open/close: slide + fade
 - Workspace transitions: slide with slight scale
@@ -207,16 +221,19 @@ font-feature-settings:
 ### **4.2 Waybar (Status Bar)**
 
 **Files:**
+
 - `~/.config/waybar/config` (modules configuration)
 - `~/.config/waybar/style-macos.css` (new theme file)
 
 **Layout Philosophy:**
+
 - **Top bar only** (classic macOS menu bar position)
 - **Translucent background** with blur
 - **Grouped modules** with subtle dividers
 - **Icon + text hybrid** (not icon-only)
 
 **Visual Design:**
+
 ```css
 /* Global */
 background: bg.panel @ 70% opacity + 20px blur
@@ -250,6 +267,7 @@ clock-color: fg.primary
 ```
 
 **Module Priority (Left to Right):**
+
 ```
 [Left]
 - Workspaces (5-10 circles)
@@ -273,16 +291,19 @@ clock-color: fg.primary
 ### **4.3 Rofi (Application Launcher)**
 
 **Files:**
+
 - `~/.config/rofi/config-macos.rasi`
 - `~/.config/rofi/theme-macos.rasi`
 
 **Layout:**
+
 - **Window:** Centered, 600×450px
 - **Orientation:** Vertical list
 - **Prompt:** Top-aligned with search icon
 - **Transparency:** 75% with 30px blur
 
 **Visual Design:**
+
 ```rasi
 window {
   background-color: bg.menu @ 75% opacity;
@@ -325,6 +346,7 @@ element-icon {
 ```
 
 **Behavior:**
+
 - **Fuzzy matching:** Enabled
 - **Show icons:** Yes (24×24px)
 - **Case sensitivity:** Smart
@@ -335,14 +357,16 @@ element-icon {
 ### **4.4 SwayNC (Notification Center)**
 
 **Files:**
+
 - `~/.config/swaync/config.json`
 - `~/.config/swaync/style-macos.css`
 
 **Notification Design:**
+
 ```css
 /* Individual Notification */
 notification {
-  background: bg.panel @ 80% opacity + 25px blur;
+  background: bg.panel @80% opacity + 25px blur;
   border: 1px solid border.default;
   border-radius: 10px;
   padding: 12px 16px;
@@ -371,7 +395,7 @@ notification-icon {
 
 /* Notification Center Panel */
 control-center {
-  background: bg.panel @ 75% opacity + 30px blur;
+  background: bg.panel @75% opacity + 30px blur;
   border: 1px solid border.default;
   border-radius: 12px;
   padding: 16px;
@@ -379,8 +403,12 @@ control-center {
 }
 
 /* Urgency Levels */
-notification.low { border-left: 3px solid fg.tertiary; }
-notification.normal { border-left: 3px solid accent.blue; }
+notification.low {
+  border-left: 3px solid fg.tertiary;
+}
+notification.normal {
+  border-left: 3px solid accent.blue;
+}
 notification.critical {
   border-left: 3px solid semantic.error;
   animation: pulse 2s infinite;
@@ -388,6 +416,7 @@ notification.critical {
 ```
 
 **Behavior:**
+
 - **Position:** Top-right, 16px margin
 - **Timeout:** 5s (normal), 0s (critical)
 - **Max notifications:** 5 visible
@@ -401,6 +430,7 @@ notification.critical {
 **File:** `~/.config/ghostty/config`
 
 **Already Configured:**
+
 ```ini
 theme = tokyonight_night  # Replace with macos-dark
 font-family = .SF NS Mono
@@ -412,6 +442,7 @@ background-opacity = 0.95
 ```
 
 **New macOS Theme Values:**
+
 ```ini
 # Background
 background = #1E1E1E
@@ -446,44 +477,6 @@ palette = 15=#FEFFFF
 
 ---
 
-### **4.6 Wofi (Alternative Launcher)**
-
-**File:** `~/.config/wofi/style-macos.css`
-
-Similar to Rofi but adapted for Wofi's CSS format:
-
-```css
-window {
-  background-color: rgba(45, 45, 45, 0.75);
-  backdrop-filter: blur(30px);
-  border: 1px solid #3C3C3C;
-  border-radius: 12px;
-  font-family: "SF Pro Text";
-  font-size: 14px;
-}
-
-#input {
-  background-color: #323232;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin: 16px;
-  color: #FFFFFF;
-  border: none;
-}
-
-#entry:selected {
-  background-color: #0A84FF;
-  color: #FFFFFF;
-  border-radius: 6px;
-}
-
-#entry:hover {
-  background-color: rgba(10, 132, 255, 0.2);
-}
-```
-
----
-
 ### **4.7 GTK 3.0/4.0**
 
 **File:** `~/.config/gtk-3.0/settings.ini`
@@ -503,6 +496,7 @@ gtk-decoration-layout = close,minimize,maximize:
 
 **GTK CSS Overrides:**
 `~/.config/gtk-3.0/gtk.css`
+
 ```css
 /* Force macOS-style window controls */
 headerbar button.titlebutton {
@@ -512,9 +506,15 @@ headerbar button.titlebutton {
   padding: 0;
 }
 
-headerbar button.titlebutton.close { background-color: #FF5F57; }
-headerbar button.titlebutton.minimize { background-color: #FFBD2E; }
-headerbar button.titlebutton.maximize { background-color: #28CA42; }
+headerbar button.titlebutton.close {
+  background-color: #ff5f57;
+}
+headerbar button.titlebutton.minimize {
+  background-color: #ffbd2e;
+}
+headerbar button.titlebutton.maximize {
+  background-color: #28ca42;
+}
 ```
 
 ---
@@ -524,6 +524,7 @@ headerbar button.titlebutton.maximize { background-color: #28CA42; }
 **File:** `~/.config/hypr/hyprlock.conf`
 
 **Design:**
+
 - **Background:** Blurred wallpaper (40px blur) with dark overlay (40% black)
 - **Clock:** Large SF Pro Display, centered
 - **Input field:** Rounded, translucent, with subtle border
@@ -618,7 +619,7 @@ style = "bold yellow"
 - **Instant switching:** All components update simultaneously
 - **Persistent:** Theme choice saved across reboots
 - **Scriptable:** CLI tool for theme changes
-- **GUI option:** Rofi/Wofi menu for visual selection
+- **GUI option:** Rofi menu for visual selection
 
 ### **5.2 Directory Structure**
 
@@ -632,7 +633,6 @@ style = "bold yellow"
 │   │   ├── waybar.css          # Waybar stylesheet
 │   │   ├── rofi.rasi           # Rofi theme
 │   │   ├── swaync.css          # SwayNC styles
-│   │   ├── wofi.css            # Wofi styles
 │   │   ├── ghostty.conf        # Ghostty theme
 │   │   ├── gtk.css             # GTK overrides
 │   │   └── starship.toml       # Starship palette
@@ -706,6 +706,7 @@ export THEME_FONT_DISPLAY="SF Pro Display"
 `~/.config/scripts/theme-switch.sh`, which no longer exists)
 
 **Pseudocode:**
+
 ```bash
 #!/bin/bash
 # Theme switcher for Hyprland macOS setup
@@ -815,18 +816,21 @@ esac
 ### **5.5 Integration Points**
 
 **Hyprland Config:**
+
 ```conf
 # ~/.config/hypr/hyprland.conf
 source = ~/.config/themes/current/hyprland.conf
 ```
 
 **Waybar Config:**
+
 ```css
 /* ~/.config/waybar/style.css */
 @import url("../themes/current/waybar.css");
 ```
 
 **Shell RC:**
+
 ```bash
 # ~/.zshrc
 source ~/.config/themes/current/colors.conf
@@ -838,6 +842,7 @@ fi
 ```
 
 **Keybinding:**
+
 ```conf
 # ~/.config/hypr/keybindings.conf
 bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh menu
@@ -848,36 +853,42 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 ## 6. Implementation Phases
 
 ### **Phase 1: Foundation (Week 1)**
+
 - [ ] Create theme directory structure
 - [ ] Define color tokens for dark mode in `colors.conf`
 - [ ] Implement basic theme switcher script (no GUI)
 - [ ] Document color palette usage guidelines
 
 ### **Phase 2: Core UI Components (Week 2)**
+
 - [ ] Theme Hyprland (borders, shadows, blur, animations)
 - [ ] Theme Waybar (create `style-macos.css`)
-- [ ] Theme Rofi/Wofi (macOS launcher aesthetic)
+- [ ] Theme Rofi (macOS launcher aesthetic)
 - [ ] Test theme switching between macOS-dark and existing themes
 
 ### **Phase 3: Notifications & Panels (Week 3)**
+
 - [ ] Theme SwayNC (notification design)
 - [ ] Theme Hyprlock (lock screen)
 - [ ] Integrate GTK theme (WhiteSur or similar)
 - [ ] Configure cursor theme
 
 ### **Phase 4: Terminal & Shell (Week 4)**
+
 - [ ] Create Ghostty macOS theme (ANSI palette)
 - [ ] Theme Starship prompt with macOS palette
 - [ ] Theme Tmux (if applicable)
 - [ ] Ensure terminal transparency + blur
 
 ### **Phase 5: Light Mode (Week 5)**
+
 - [ ] Define light mode color tokens
 - [ ] Create `macos-light` theme directory
 - [ ] Adapt all component themes for light mode
 - [ ] Test light/dark switching
 
 ### **Phase 6: Polish & Automation (Week 6)**
+
 - [ ] Implement theme preview functionality
 - [ ] Create Rofi-based theme selector UI
 - [ ] Add auto-theme switching (time-based)
@@ -885,6 +896,7 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 - [ ] Create demo video
 
 ### **Phase 7: Extras (Optional)**
+
 - [ ] Theme Firefox (macOS chrome)
 - [ ] Theme VSCode/Neovim status bars
 - [ ] Create wallpaper pack with complementary colors
@@ -895,18 +907,21 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 ## 7. Design References & Assets
 
 ### **7.1 Color Extraction Sources**
+
 - macOS Sequoia/Sonoma system apps (Finder, Safari, System Settings)
 - Apple Human Interface Guidelines (HIG)
 - SF Symbols color palette
 - WebKit CSS system colors (`-apple-system-blue`, etc.)
 
 ### **7.2 Required Assets**
+
 - **Window Control Icons:** Red/yellow/green dots (12×12px SVG)
 - **App Icons:** macOS-style rounded square icons (512×512px)
 - **Wallpapers:** Dynamic wallpapers or macOS stock imagery
 - **Cursor Theme:** macOS Monterey cursor pack
 
 ### **7.3 Typography Assets**
+
 - **SF Pro family:** Download from Apple Developer
 - **SF Mono:** System font (already installed at `~/.local/share/fonts/mac-fonts/`)
 - **SF Symbols:** Optional icon font
@@ -916,6 +931,7 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 ## 8. Testing & Validation
 
 ### **8.1 Visual Consistency Checklist**
+
 - [ ] All UI elements use the same border radius (10-12px)
 - [ ] Blur effects are consistent across panels
 - [ ] Typography is uniform (same font families)
@@ -924,6 +940,7 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 - [ ] Opacity levels match specification
 
 ### **8.2 Functional Testing**
+
 - [ ] Theme switching updates all components immediately
 - [ ] No visual glitches during transitions
 - [ ] Theme persists after reboot
@@ -931,6 +948,7 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 - [ ] Dark mode has sufficient contrast (WCAG AA)
 
 ### **8.3 Performance Testing**
+
 - [ ] Blur effects don't cause lag (monitor FPS with `hyprctl monitors`)
 - [ ] Transparency doesn't impact battery significantly
 - [ ] Theme switching completes in < 2 seconds
@@ -940,18 +958,21 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 ## 9. Accessibility Considerations
 
 ### **9.1 High Contrast Mode**
+
 - Increase foreground/background contrast by 20%
 - Use solid backgrounds (remove transparency)
 - Thicken borders to 3px
 - Disable blur effects
 
 ### **9.2 Reduced Motion**
+
 - Respect `prefers-reduced-motion` (if possible)
 - Disable window animations
 - Instant workspace transitions
 - No fade effects
 
 ### **9.3 Color Blind Modes**
+
 - Protanopia preset: Replace red/green with blue/yellow
 - Deuteranopia preset: Adjust accent colors
 - Test with color blind simulation tools
@@ -961,12 +982,14 @@ bind = SUPER_SHIFT, T, exec, ${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switc
 ## 10. Documentation Deliverables
 
 ### **10.1 User Documentation**
+
 - **README.md:** Overview, installation, usage
 - **THEMES.md:** How to create custom themes
 - **FAQ.md:** Common issues and solutions
 - **SCREENSHOTS.md:** Before/after gallery
 
 ### **10.2 Developer Documentation**
+
 - **ARCHITECTURE.md:** Theme system design
 - **COLOR-TOKENS.md:** Complete color variable reference
 - **CONTRIBUTING.md:** Guidelines for theme contributions
@@ -1017,12 +1040,14 @@ bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" menu
 **Format:** `THEME_<CATEGORY>_<ELEMENT>_<VARIANT>`
 
 **Examples:**
+
 - `THEME_BG_WINDOW` - Window background
 - `THEME_ACCENT_BLUE_HOVER` - Blue accent hover state
 - `THEME_FG_PRIMARY` - Primary text color
 - `THEME_BORDER_FOCUS` - Focused element border
 
 **Categories:**
+
 - `BG` - Backgrounds
 - `FG` - Foreground/text
 - `ACCENT` - Accent colors
@@ -1034,4 +1059,4 @@ bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" menu
 
 **End of Specification**
 
-*This document will be updated as the implementation progresses. Version: 1.0 (2025-11-09)*
+_This document will be updated as the implementation progresses. Version: 1.0 (2025-11-09)_
