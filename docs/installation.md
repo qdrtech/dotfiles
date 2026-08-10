@@ -194,6 +194,10 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   It calls `wofi -c ~/.config/wofi/waybar -s ~/.config/wofi/style-waybar.css`.
   The `wofi` package only ships `style.css`.
 - **Theming does not apply cleanly.** See [theme-switching.md](theme-switching.md).
-- **Hardcoded paths.** `/home/qdrtech` appears literally in `.zshrc` and
-  `rofi/config.rasi`, and two committed symlinks have absolute targets. Grep for
-  it and fix before using on another account.
+- **Hardcoded paths.** `/home/qdrtech` appears literally in `zshrc/.zshrc`
+  (lines 14, 32, 45, 56, 79), `rofi/.config/rofi/config.rasi:9` and
+  `themes/.config/themes/default/rofi.rasi:2`, and it is the target of both
+  committed symlinks (`rofi/.config/rofi/theme.rasi`,
+  `swaync/.config/swaync/style.css`). That is the full list outside the `nvim`
+  submodule. Re-check with `git grep -n /home/qdrtech` — which does not read
+  symlink targets — and fix before using on another account.

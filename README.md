@@ -85,8 +85,12 @@ will break.
 This config is tied to one machine. Specifically:
 
 - **Hardcoded home directory.** `/home/qdrtech` is written literally in
-  `zshrc/.zshrc` and `rofi/.config/rofi/config.rasi`. Another user's shell and
-  launcher will not work unmodified.
+  `zshrc/.zshrc` (lines 14, 32, 45, 56, 79),
+  `rofi/.config/rofi/config.rasi:9` and
+  `themes/.config/themes/default/rofi.rasi:2`. Another user's shell, launcher
+  and theme will not work unmodified. That is the full list outside the `nvim`
+  submodule; re-check with `git grep -n /home/qdrtech`, which does not read the
+  symlink targets below.
 - **Committed absolute-path symlinks.** `rofi/.config/rofi/theme.rasi` and
   `swaync/.config/swaync/style.css` are symlinks whose targets start with
   `/home/qdrtech`. They are dangling for anyone else.
