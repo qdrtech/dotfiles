@@ -129,7 +129,7 @@ before installing.
 | `wl-copy` | `wl-clipboard` | `waybar/scripts/colorpicker.sh` |
 | `notify-send` | `libnotify` | `waybar/scripts/colorpicker.sh` |
 | `wofi` | `wofi` | `waybar/scripts/select.sh` (see caveat below) |
-| JetBrainsMono Nerd Font | `ttf-jetbrains-mono-nerd` | `waybar/style.css:5`, `rofi/config.rasi:4` |
+| JetBrainsMono Nerd Font | `ttf-jetbrains-mono-nerd` | `waybar/style.css:5`, `rofi/config.rasi:5` |
 
 ### Required by the shell
 
@@ -144,7 +144,7 @@ before installing.
 | `figlet` | `figlet` | `config/scripts/term-startup.sh` |
 | `fastfetch` | `fastfetch` | `config/scripts/term-startup.sh` |
 | `tmux` | `tmux` | `tmux/.tmux.conf` |
-| tpm | clone to `~/.tmux/plugins/tpm` | `.tmux.conf:53` — plugin manager, loads tmux-resurrect and tmux-continuum |
+| tpm | clone to `~/.tmux/plugins/tpm` | `.tmux.conf:4` declares it, `.tmux.conf:64` runs it — plugin manager, loads tmux-resurrect and tmux-continuum |
 | pywal | `python-pywal` | `.zshrc:51` reads `~/.cache/wal/sequences`; `wal/` package holds its templates |
 | `convert` | `imagemagick` | required by `config/scripts/wal` (a vendored copy of the pywal shell script) |
 
