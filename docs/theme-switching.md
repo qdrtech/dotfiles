@@ -18,7 +18,9 @@ today, not what was intended.
 | Themes dir | `$DOTFILES_ROOT/themes` | `~/.config/themes` |
 
 The committed themes in `themes/.config/themes/` are all in the **second**
-format. `docs/` and the top-level `README` describe the **first**.
+format, and so is the one design spec that names variables at all
+(`docs/macos-theme-spec.md:659,1019`). The top-level `README` describes neither
+format in detail — it notes that both switchers exist and defers here.
 
 ## What actually happens
 
@@ -152,8 +154,9 @@ at minimum:
    design decisions, not a mechanical rename of the `THEME_*` values.
 2. SwayNC and Starship handling added to `scripts/theme-switch.sh`, or an
    explicit decision to drop them.
-3. The four defects above fixed (`list` path, `write_atomic` ordering, `set`
-   exit code, generated output escaping into the repo).
+3. The other four of the six defects above fixed (`list` path, `write_atomic`
+   ordering, `set` exit code, generated output escaping into the repo). Defects
+   2 and 3 are covered by item 1.
 4. `ts` in `.zshrc:21` repointed, the file-first switcher removed, and
    `themes/.config/themes/README.md` retired.
 
