@@ -46,11 +46,16 @@ file-first theme switcher ever referenced the path.
 
 | File         | What it does                                                                                                                                                                                                   |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `config`     | Ghostty settings: `.SF NS Mono` at 14pt, ligatures, 10px horizontal padding, `background-blur-radius = 20`, `background-opacity = 0.2`, GTK titlebar, sudo shell integration.                                  |
+| `config`     | Ghostty settings: `.SF NS Mono` at 14pt, ligatures, 10px horizontal padding, `background-blur-radius = 20`, `background-opacity = 0.2`, GTK titlebar, sudo shell integration, and `config-file = ?theme.conf` to load the generated palette. |
 | `theme.conf` | **Generated**, not authored. Written by `scripts/theme-switch.sh`. `~/.config/ghostty` is a folded symlink into this repo, so the switcher writes straight into the working tree; the path is in `.gitignore`. |
 
-`config` does **not** `include` `theme.conf`. As committed, Ghostty never reads
-the generated colours.
+`config` pulls in `theme.conf` with `config-file = ?theme.conf`. The path is
+relative to `config`, and the leading `?` makes it optional, so a fresh clone
+whose switcher has not run yet still starts instead of failing with
+`error opening config-file ...: error.FileNotFound`. Ghostty applies an included
+file *after* the file that pulls it in, regardless of where the directive
+appears, so the generated palette always wins over colours set in `config` —
+which is why `config` sets none.
 
 ---
 

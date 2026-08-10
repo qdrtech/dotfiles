@@ -192,14 +192,14 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
     the only usable success criterion.
   - `~/.config/starship.toml` is generated too. Without it, starship uses its
     own defaults.
+  - `ghostty/.config/ghostty/config` does `config-file = ?theme.conf`. The `?`
+    marks the include optional, so with the file absent Ghostty starts on its
+    built-in colours rather than failing; `ghostty +validate-config` exits 0.
 
 - **`~/.config/hypr/scripts/xdg.sh` does not exist.**
   `hyprland/.config/hypr/conf/autostart.conf:8` runs it on every login. It was
   never committed. Its stated job was XDG desktop portal setup for screen
   sharing.
-- **`ghostty/.config/ghostty/config` does not `include` `theme.conf`.** The
-  switcher writes the file; Ghostty never reads it. See
-  [packages.md](packages.md).
 
 No absolute path carrying a username is left in the tree, including symlink
 targets.
