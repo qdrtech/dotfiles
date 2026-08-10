@@ -225,7 +225,7 @@ write_ghostty() {
 background=$BG
 foreground=$TEXT
 cursor-color=$ACCENT
-selection-background=$SURFACE_ALT
+selection-background=$SURFACE
 selection-foreground=$TEXT
 palette=0=$BG
 palette=1=$ERROR
