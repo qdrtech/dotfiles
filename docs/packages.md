@@ -54,8 +54,16 @@ relative to `config`, and the leading `?` makes it optional, so a fresh clone
 whose switcher has not run yet still starts instead of failing with
 `error opening config-file ...: error.FileNotFound`. Ghostty applies an included
 file *after* the file that pulls it in, regardless of where the directive
-appears, so the generated palette always wins over colours set in `config` —
-which is why `config` sets none.
+appears, so within Ghostty's config resolution the generated palette wins over
+colours set in `config` — which is why `config` sets none.
+
+That precedence is about config load order only, not about what ends up on
+screen. `zshrc/.zshrc:51-53` replays `~/.cache/wal/sequences` on every shell
+start, stripping only OSC 11/17/19/708. What survives the strip still sets
+OSC 4;0-15, OSC 10 and OSC 12, so pywal overrides the palette, foreground and
+cursor at runtime — 18 of the 21 values in `theme.conf`. Background and the two
+`selection-*` values survive, because their sequences (OSC 11, 17, 19) are the
+stripped ones.
 
 ---
 
