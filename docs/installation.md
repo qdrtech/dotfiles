@@ -174,7 +174,7 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   - `hyprland/.config/hypr/hyprland.conf:22` does
     `source = ~/.config/hypr/theme-colors.conf`. With the file absent that
     `source` fails and none of `$bg $surface $surface_alt $fg $fg_muted $accent
-$accent_alt $warn $error $success` are defined, so
+    $accent_alt $warn $error $success` are defined, so
     `hyprland/.config/hypr/conf/theme.conf:28-29`
     (`col.active_border = $fg_muted`, `col.inactive_border = $surface`) has no
     values to use.
