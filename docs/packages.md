@@ -3,6 +3,12 @@
 One section per stow package. "Target" is where the package lands when stowed
 with `-t "$HOME"` from a clone at `~/dotfiles`.
 
+Paths in each section's **File** column are relative to that section's package
+(`conf/monitors.conf` under `hyprland` means
+`hyprland/.config/hypr/conf/monitors.conf`). Everywhere else, a path without a
+leading `~` is relative to the repo root and a path with a leading `~` is the
+deployed location.
+
 `scripts/` and `docs/` are **not** stow packages. `scripts/theme-switch.sh` is
 run from the repo, not from `$HOME`.
 
@@ -16,17 +22,17 @@ Shared helpers that are not tied to one program.
 
 | File | What it does |
 | --- | --- |
-| `scripts/term-startup.sh` | Runs `figlet qdrtech` then `fastfetch`. Called from `.zshrc:10`. |
-| `scripts/import-gsettings.sh` | Reads `gtk-3.0/settings.ini` and pushes theme/icon/cursor/font into `org.gnome.desktop.interface` via `gsettings`. Run on login from `hypr/conf/autostart.conf:11`. |
+| `scripts/term-startup.sh` | Runs `figlet qdrtech` then `fastfetch`. Called from `zshrc/.zshrc:10`. |
+| `scripts/import-gsettings.sh` | Reads `gtk-3.0/settings.ini` and pushes theme/icon/cursor/font into `org.gnome.desktop.interface` via `gsettings`. Run on login from `hyprland/.config/hypr/conf/autostart.conf:11`. |
 | `scripts/git-prune.sh` | `git fetch --prune`, then interactively deletes local branches whose upstream is gone. Aliased to `gitprune`. |
 | `scripts/docker-login-ecr.sh` | Work-specific AWS ECR login. Aliased to `dle`. Not generally useful. |
 | `scripts/wal` | A vendored copy of the pywal shell script (`wal`) by Dylan Araps. Requires ImageMagick's `convert`. |
 | `scripts/theme-switch.sh` | The **older** theme switcher. See [theme-switching.md](theme-switching.md). |
 | `settings/rofi-border.rasi`, `rofi-border-radius.rasi`, `rofi-font.rasi` | One-line rofi settings fragments. Nothing in this repo imports them. |
-| `cache/blurred_wallpaper.png` | Lock screen background. Read by `hypr/hyprlock.conf:15`. |
+| `cache/blurred_wallpaper.png` | Lock screen background. Read by `hyprland/.config/hypr/hyprlock.conf:15`. |
 | `cache/current_wallpaper`, `cache/current_wallpaper.rasi` | Wallpaper path record and a rofi snippet that points at `blurred_wallpaper.png`. |
 
-`~/.config/scripts` is on `PATH` (`.zshrc:42`).
+`~/.config/scripts` is on `PATH` (`zshrc/.zshrc:42`).
 
 Note: `~/.config/base` exists on the reference machine as a dangling symlink to
 `config/.config/base`, which is not in this repo. Only the older theme switcher
@@ -54,8 +60,8 @@ the generated colours.
 
 Requests the `Tokyonight-Dark` GTK theme and `Tokyonight-Moon` icons, 24px
 default cursor, dark-theme preference, and full hinting. The font lines are
-commented out. `config/scripts/import-gsettings.sh` mirrors these into gsettings
-at login.
+commented out. `config/.config/scripts/import-gsettings.sh` mirrors these into
+gsettings at login.
 
 ---
 
@@ -103,7 +109,7 @@ tracked here.
 **Target:** `~/.config/hyprshade`
 
 One schedule: `blue-light-filter` from 20:30 to 06:00. Started by
-`hypr/conf/autostart.conf:20` (`hyprshade auto`).
+`hyprland/.config/hypr/conf/autostart.conf:20` (`hyprshade auto`).
 
 ---
 
@@ -191,7 +197,7 @@ pywal assets: `colorschemes/dark/ywal16.json` and four templates
 (`colors-hyprland`, `colors-rofi-dark.rasi`, `colors-rofi-pywal.rasi`,
 `tokyonight.rasi`). pywal renders templates into `~/.cache/wal/`.
 
-`.zshrc:51-53` replays `~/.cache/wal/sequences` on every shell start, stripping
+`zshrc/.zshrc:51-53` replays `~/.cache/wal/sequences` on every shell start, stripping
 OSC 11/17/19/708 so the opaque background does not override Ghostty's
 `background-opacity`.
 
@@ -233,7 +239,7 @@ stowed, that writes into this repo.
 **Target:** `~/.config/wofi`
 
 One file, `style.css`, a Catppuccin Mocha `@define-color` palette. Nothing in the
-active config launches wofi except `waybar/scripts/select.sh`, and that asks for
+active config launches wofi except `waybar/.config/waybar/scripts/select.sh`, and that asks for
 `~/.config/wofi/waybar` and `~/.config/wofi/style-waybar.css`, neither of which
 exists here. The launcher bound to `SUPER+Space` is rofi.
 

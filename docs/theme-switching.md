@@ -14,7 +14,7 @@ today, not what was intended.
 | Style | palette-first: generates colour files from ~10 variables | file-first: symlinks or copies whole per-component files |
 | Theme format | `BG`, `SURFACE`, `TEXT`, `ACCENT`, … | `THEME_BG_WINDOW`, `THEME_ACCENT_BLUE`, … |
 | Covers | Hyprland, Waybar, Rofi, Ghostty | Hyprland, Waybar, Rofi, Ghostty, SwayNC, Starship |
-| Reached via | run from the repo | the `ts` alias (`.zshrc:21`) |
+| Reached via | run from the repo | the `ts` alias (`zshrc/.zshrc:21`) |
 | Themes dir | `$DOTFILES_ROOT/themes` | `~/.config/themes` |
 
 The committed themes in `themes/.config/themes/` are all in the **second**
@@ -123,8 +123,9 @@ component symlinks or copies the theme's own file:
    repo, so the Hyprland step overwrites the tracked
    `hyprland/.config/hypr/conf/theme.conf`. The Waybar and Rofi steps repoint
    symlinks away from the repo's own `style.css` and `config.rasi` wiring.
-2. **It breaks the generated-colour pipeline.** `waybar/style.css` and
-   `rofi/config.rasi` as committed consume the palette-first switcher's output
+2. **It breaks the generated-colour pipeline.** `waybar/.config/waybar/style.css`
+   and `rofi/.config/rofi/config.rasi` as committed consume the palette-first
+   switcher's output
    (`@import url("theme-colors.css")`, `@theme ".../generated-theme.rasi"`).
    Replacing them with a theme's own `waybar.css` / `rofi.rasi` drops that.
 3. **`setup_base_configs` reads `~/.config/base/waybar/config`**, which is not in
@@ -143,7 +144,8 @@ These exist because both switchers have been run at different times:
 - `~/.config/rofi/theme.rasi` and `~/.config/swaync/style.css` — committed
   symlinks with absolute `/home/qdrtech` targets, left by the file-first switcher.
 - `~/.config/hypr/theme.conf` — a stray copy at the `hypr` root rather than in
-  `conf/`. Nothing sources it; `hyprland.conf:41` sources `conf/theme.conf`.
+  `conf/`. Nothing sources it; `hyprland/.config/hypr/hyprland.conf:41` sources
+  `conf/theme.conf`.
 
 Two more were orphaned by the dead-package removal in commit `5a2c847`:
 
@@ -173,7 +175,7 @@ at minimum:
 3. The other four of the six defects above fixed (`list` path, `write_atomic`
    ordering, `set` exit code, generated output escaping into the repo). Defects
    2 and 3 are covered by item 1.
-4. `ts` in `.zshrc:21` repointed, the file-first switcher removed, and
+4. `ts` in `zshrc/.zshrc:21` repointed, the file-first switcher removed, and
    `themes/.config/themes/README.md` retired.
 
 Until then, do not run either switcher on a working setup.
