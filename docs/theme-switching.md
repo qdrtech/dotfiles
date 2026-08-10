@@ -82,7 +82,7 @@ SUCCESS="#a6e3a1"
    the reference machine hold a dark macOS-ish palette (`#0f1115`, `#0a84ff`)
    that is not derivable from any `colors.conf` in this repo. The source palette
    could not be located: `~/.config/themes/current` points at
-   `/home/qdrtech/dotfiles/themes/macos-dark`, and that path does not exist (the
+   `<clone>/themes/macos-dark`, and that path does not exist (the
    committed theme lives at `themes/.config/themes/macos-dark`). Running `set`
    today replaces those colours with the Catppuccin fallback.
 
@@ -139,10 +139,11 @@ component symlinks or copies the theme's own file:
 
 These exist because both switchers have been run at different times:
 
-- `~/.config/themes/current -> /home/qdrtech/dotfiles/themes/macos-dark` — dangling.
+- `~/.config/themes/current -> <clone>/themes/macos-dark` — dangling.
 - `~/.config/themes/colors.conf` — dangling, follows `current`.
 - `~/.config/rofi/theme.rasi` and `~/.config/swaync/style.css` — committed
-  symlinks with absolute `/home/qdrtech` targets, left by the file-first switcher.
+  symlinks left by the file-first switcher. Their targets are now relative to
+  the repo, so they resolve rather than dangle, but nothing regenerates them.
 - `~/.config/hypr/theme.conf` — a stray copy at the `hypr` root rather than in
   `conf/`. Nothing sources it; `hyprland/.config/hypr/hyprland.conf:41` sources
   `conf/theme.conf`.

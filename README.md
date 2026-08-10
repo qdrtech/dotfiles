@@ -67,10 +67,8 @@ stow -t "$HOME" hyprland waybar rofi ghostty swaync themes config \
 `stow` defaults its target to the parent of the repo directory. Cloning to
 `~/dotfiles` makes the default target `$HOME`; `-t "$HOME"` states it
 explicitly and works from any clone location, because stow computes its
-symlink targets relative to wherever the repo actually is.
-
-The clone path still matters for one thing: `tmux/.tmux.conf:16` hardcodes
-`bind r source-file ~/dotfiles/tmux/.tmux.conf`.
+symlink targets relative to wherever the repo actually is. Nothing in the repo
+assumes a particular clone path.
 
 ## Theming
 
@@ -84,16 +82,6 @@ will break.
 
 This config is tied to one machine. Specifically:
 
-- **Hardcoded home directory.** `/home/qdrtech` is written literally in
-  `zshrc/.zshrc` (lines 14, 32, 45, 56, 79),
-  `rofi/.config/rofi/config.rasi:9` and
-  `themes/.config/themes/default/rofi.rasi:2`. Another user's shell, launcher
-  and theme will not work unmodified. That is the full list outside the `nvim`
-  submodule; re-check with `git grep -n /home/qdrtech`, which does not read the
-  symlink targets below.
-- **Committed absolute-path symlinks.** `rofi/.config/rofi/theme.rasi` and
-  `swaync/.config/swaync/style.css` are symlinks whose targets start with
-  `/home/qdrtech`. They are dangling for anyone else.
 - **Monitor-specific.** `hyprland/.config/hypr/conf/monitors.conf` and
   `workspace.conf` name `DP-1` and `DP-2` with fixed modes and workspace
   assignments. `hyprland/.config/hypr/hyprpaper.conf` and `hyprlock.conf` also

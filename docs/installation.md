@@ -9,17 +9,15 @@ git clone --recurse-submodules <this-repo> ~/dotfiles
 cd ~/dotfiles
 ```
 
-Clone to `~/dotfiles`. Stow is not the reason: it creates the `~/.config`
-symlinks itself at stow time and computes each relative target from wherever
-you cloned, so stow's own links work from any location. The clone path matters
-for exactly one thing — `tmux/.tmux.conf:16` hardcodes
-`bind r source-file ~/dotfiles/tmux/.tmux.conf`, so the tmux reload binding only
-works from a clone at `~/dotfiles`.
+`~/dotfiles` is a convention, not a requirement. Stow creates the `~/.config`
+symlinks at stow time and computes each relative target from wherever you
+cloned, and nothing in the repo assumes a particular clone path.
 
-Two symlinks *are* committed, and both have **absolute** targets:
-`rofi/.config/rofi/theme.rasi` and `swaync/.config/swaync/style.css` point at
-`/home/qdrtech/.config/themes/default/`. Those are unaffected by where you clone
-and dangle for any other user. See [packages.md](packages.md).
+Two symlinks *are* committed — `rofi/.config/rofi/theme.rasi` and
+`swaync/.config/swaync/style.css`. Their targets are relative to the repo
+(`../../../themes/.config/themes/default/`), so they resolve from any clone
+path for any user, whether or not stow folds the directory. See
+[packages.md](packages.md).
 
 The `nvim` package is a git submodule pointing at
 `git@github.com:qdrtech/xghost-config` over SSH. Without access to that repo the
@@ -188,9 +186,9 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
     `@bg`, `@surface` and `@text` — used at lines 9, 10, 19, 24 and 25 — are
     undefined, so the bar comes up unstyled.
   - Rofi is the exception: `rofi/.config/rofi/config.rasi:9` points `@theme` at
-    the absolute path `/home/qdrtech/.config/rofi/generated-theme.rasi`, and
-    `generated-theme.rasi` *is* committed, so it resolves for the user
-    `qdrtech` and fails for anyone else.
+    `generated-theme.rasi`, which rofi resolves against the directory of the
+    including file, and `generated-theme.rasi` *is* committed — so the launcher
+    comes up themed with no generation step.
 
   The only thing that writes these files is `scripts/theme-switch.sh`
   (`scripts/theme-switch.sh:15-18`), and it is broken — see
@@ -205,10 +203,13 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   `wofi -c ~/.config/wofi/waybar -s ~/.config/wofi/style-waybar.css`. The `wofi`
   package only ships `wofi/.config/wofi/style.css`.
 - **Theming does not apply cleanly.** See [theme-switching.md](theme-switching.md).
-- **Hardcoded paths.** `/home/qdrtech` appears literally in `zshrc/.zshrc`
-  (lines 14, 32, 45, 56, 79), `rofi/.config/rofi/config.rasi:9` and
-  `themes/.config/themes/default/rofi.rasi:2`, and it is the target of both
-  committed symlinks (`rofi/.config/rofi/theme.rasi`,
-  `swaync/.config/swaync/style.css`). That is the full list outside the `nvim`
-  submodule. Re-check with `git grep -n /home/qdrtech` — which does not read
-  symlink targets — and fix before using on another account.
+- **`themes/.config/themes/default/rofi.rasi` does not parse.** Rofi rejects the
+  file itself (`rofi -no-config -theme <file> -dump-theme` warns "Failed to
+  parse theme"), and so does the `theme-colors.rasi` it imports, which uses a
+  top-level `@name: value;` form rofi no longer accepts. Nothing in the live
+  launcher path loads either file — `config.rasi` uses `generated-theme.rasi` —
+  so this only matters if the theme switcher is revived.
+
+No absolute path carrying a username is left in the tree, including symlink
+targets. Re-check with `git grep -n /home/` plus
+`git ls-tree -r HEAD | grep 120000` — `git grep` does not read symlink targets.
