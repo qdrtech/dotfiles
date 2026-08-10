@@ -84,6 +84,15 @@ ts set macos-dark
 
 **Run `ts set <theme>` once after stowing.** None of the generated colour files
 are tracked, and several configs need them.
+
+`ts` is a zsh alias, fixed at shell start, so a shell opened before `.zshrc` was
+stowed or updated does not have it — or has an older one pointing at a switcher
+that no longer exists. Run `exec zsh` first, or skip the alias:
+
+```sh
+bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" set macos-dark
+```
+
 Details: [docs/theme-switching.md](docs/theme-switching.md).
 
 ## Known limitations

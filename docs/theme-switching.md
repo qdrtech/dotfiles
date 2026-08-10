@@ -8,6 +8,42 @@ The older file-first switcher (`config/.config/scripts/theme-switch.sh`), which
 symlinked whole per-component files into place, has been removed. Its SwayNC and
 Starship coverage was carried over.
 
+## Applying this change on a machine that already had the old switcher
+
+Four things go unstyled the moment the change lands, and stay that way until the
+switcher is run once:
+
+- `~/.config/rofi/theme-colors.rasi` and `generated-theme.rasi` are deleted, so
+  `config.rasi:9` has no theme to load.
+- `~/.config/swaync/style.css` stops being a per-theme symlink and becomes a
+  real file whose first line is `@import url("theme-colors.css")` — a file that
+  has never existed here. SwayNC comes up unstyled.
+- `~/.config/starship.toml` pointed into the deleted `default` theme, so it
+  dangles and Starship falls back to its built-in prompt.
+- `~/.config/ghostty/theme.conf` is deleted. Nothing `include`s it, so nothing
+  changes visibly.
+
+**Do not run `ts` in a shell you already had open.** `ts` is a zsh alias, fixed
+at shell start; a shell that predates the change still holds the old
+`sh ~/.config/scripts/theme-switch.sh`, and `~/.config/scripts` is a symlink
+into this repo, where that script no longer exists. `ts set macos-dark` there
+fails with *no such file*, in exactly the window where rofi, SwayNC and Starship
+are unstyled. Reload the alias first:
+
+```sh
+exec zsh && ts set macos-dark
+```
+
+or skip the alias entirely:
+
+```sh
+bash "${DOTFILES_DIR:-$HOME/dotfiles}/scripts/theme-switch.sh" set macos-dark
+```
+
+Hyprland and Waybar read untracked files in real `~/.config` directories that
+this change never touches, so the bar and the window borders stay themed
+throughout.
+
 ## A theme is ten variables
 
 `themes/.config/themes/<name>/colors.conf`:
