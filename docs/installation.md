@@ -162,6 +162,31 @@ or the setting silently falls back.
 
 These are real, verified gaps. Fix or ignore, but do not expect them to work.
 
+- **The generated colour files are missing and nothing can generate them.**
+  This is the largest gap on a fresh machine. `~/.config/hypr/theme-colors.conf`
+  and `~/.config/waybar/theme-colors.css` are produced by the theme switcher and
+  are not tracked in this repo, but the committed configs require them:
+
+  - `hyprland/.config/hypr/hyprland.conf:22` does
+    `source = ~/.config/hypr/theme-colors.conf`. With the file absent that
+    `source` fails and none of `$bg $surface $surface_alt $fg $fg_muted $accent
+    $accent_alt $warn $error $success` are defined, so
+    `hyprland/.config/hypr/conf/theme.conf:28-29`
+    (`col.active_border = $fg_muted`, `col.inactive_border = $surface`) has no
+    values to use.
+  - `waybar/.config/waybar/style.css:1` does
+    `@import url("theme-colors.css")`. With the file absent the import fails and
+    `@bg`, `@surface` and `@text` — used at lines 9, 10, 19, 24 and 25 — are
+    undefined, so the bar comes up unstyled.
+  - Rofi is the exception: `rofi/.config/rofi/config.rasi:9` points `@theme` at
+    the absolute path `/home/qdrtech/.config/rofi/generated-theme.rasi`, and
+    `generated-theme.rasi` *is* committed, so it resolves for the user
+    `qdrtech` and fails for anyone else.
+
+  The only thing that writes these files is `scripts/theme-switch.sh`
+  (`scripts/theme-switch.sh:15-18`), and it is broken — see
+  [theme-switching.md](theme-switching.md). The other switcher never generates
+  them. There is no working way to produce the missing files today.
 - **`~/.config/hypr/scripts/xdg.sh` does not exist.**
   `hypr/conf/autostart.conf:8` runs it on every login. It was never committed.
   Its stated job was XDG desktop portal setup for screen sharing.
