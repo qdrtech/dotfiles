@@ -225,20 +225,15 @@ OSC 11/17/19/708 so the opaque background does not override Ghostty's
 
 **Target:** `~/.config/waybar`
 
-| File                                      | What it does                                                                                                                                                                                |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `config`                                  | Top bar. Left: notifications, clock, pacman updates, tray. Center: Hyprland workspaces. Right: an expanding drawer group with colour picker, CPU, memory, temperature, bluetooth, network.  |
-| `style.css`                               | Real stylesheet. First line is `@import url("theme-colors.css")`, so it depends on the generated file existing. Uses `@bg`, `@surface`, `@text` from the switcher and `@color9` from pywal. |
-| `scripts/launch.sh`                       | `killall waybar`, then start it. Branches on `$USER = qdrtech`. Bound to `SUPER+Shift+B`.                                                                                                   |
-| `scripts/refresh.sh`                      | Toggle: kill if running, start if not.                                                                                                                                                      |
-| `scripts/colorpicker.sh`                  | `hyprpicker` + `wl-copy`, keeps a 10-entry history in `~/.cache/colorpicker/colors`, and emits waybar JSON with `-j`.                                                                       |
-| `themes/{default,experimental,line,zen}/` | Four alternative bar layouts + stylesheets, used only by `select.sh`.                                                                                                                       |
-| `assets/*.png`                            | Preview thumbnails for `select.sh`.                                                                                                                                                         |
+| File                     | What it does                                                                                                                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config`                 | Top bar. Left: notifications, clock, pacman updates, tray. Center: Hyprland workspaces. Right: an expanding drawer group with colour picker, CPU, memory, temperature, bluetooth, network.  |
+| `style.css`              | Real stylesheet. First line is `@import url("theme-colors.css")`, so it depends on the generated file existing. Uses `@bg`, `@surface`, `@text` from the switcher and `@color9` from pywal. |
+| `scripts/launch.sh`      | `killall waybar`, then start it. Branches on `$USER = qdrtech`. Bound to `SUPER+Shift+B`.                                                                                                   |
+| `scripts/refresh.sh`     | Toggle: kill if running, start if not.                                                                                                                                                      |
+| `scripts/colorpicker.sh` | `hyprpicker` + `wl-copy`, keeps a 10-entry history in `~/.cache/colorpicker/colors`, and emits waybar JSON with `-j`.                                                                       |
 
 `~/.config/waybar/theme-colors.css` is generated and not tracked.
-
-Note: `scripts/select.sh` overwrites `style.css` in place. Since the package is
-stowed, that writes into this repo.
 
 ---
 
