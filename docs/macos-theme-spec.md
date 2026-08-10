@@ -477,7 +477,7 @@ palette = 15=#FEFFFF
 
 ---
 
-### **4.7 GTK 3.0/4.0**
+### **4.6 GTK 3.0/4.0**
 
 **File:** `~/.config/gtk-3.0/settings.ini`
 
@@ -519,7 +519,7 @@ headerbar button.titlebutton.maximize {
 
 ---
 
-### **4.8 Hyprlock (Lock Screen)**
+### **4.7 Hyprlock (Lock Screen)**
 
 **File:** `~/.config/hypr/hyprlock.conf`
 
@@ -573,7 +573,7 @@ input-field {
 
 ---
 
-### **4.9 Starship (Shell Prompt)**
+### **4.8 Starship (Shell Prompt)**
 
 **File:** `~/.config/starship.toml`
 
