@@ -1,5 +1,5 @@
 /* Palette-driven Rofi theme */
-@import "/home/qdrtech/.config/rofi/theme-colors.rasi";
+@import "~/.config/rofi/theme-colors.rasi";
 
 * {
     background-color: @bg;
