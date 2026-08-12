@@ -121,11 +121,14 @@ stow package at all. The one exception is the per-package file tables in
 
 **Screen sharing needs `xdg-desktop-portal-hyprland`, and nothing in this repo.**
 Nothing here sets up XDG desktop portals, and nothing here needs to: the
-Hyprland binary exports the session environment itself, with a built-in
-`systemctl --user import-environment DISPLAY WAYLAND_DISPLAY
-HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP QT_QPA_PLATFORMTHEME PATH
-XDG_DATA_DIRS && … dbus-update-activation-environment --systemd …` (visible in
-`strings /usr/bin/Hyprland`). What screen sharing does require is a portal
+Hyprland binary exports the session environment itself, with a built-in call
+that is visible in `strings /usr/bin/Hyprland`:
+
+```
+systemctl --user import-environment DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP QT_QPA_PLATFORMTHEME PATH XDG_DATA_DIRS && … dbus-update-activation-environment --systemd …
+```
+
+What screen sharing does require is a portal
 _backend_: `xdg-desktop-portal-hyprland`, alongside `xdg-desktop-portal`
 itself. Without it there is no `hyprland.portal` in
 `/usr/share/xdg-desktop-portal/portals/` and `org.freedesktop.portal.ScreenCast`
@@ -135,8 +138,11 @@ configuration from this repo: `/usr/share/xdg-desktop-portal/hyprland-portals.co
 shipped by the `hyprland` package, already declares `[preferred]
 default=hyprland;gtk`. Installing the backend mid-session is not enough on its
 own, since `xdg-desktop-portal` only scans for backends at startup; log out and
-back in, or `systemctl --user restart xdg-desktop-portal
-xdg-desktop-portal-hyprland`.
+back in, or restart the portal services:
+
+```sh
+systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
+```
 
 ### Required by Waybar modules
 
