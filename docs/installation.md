@@ -185,7 +185,7 @@ or the setting silently falls back.
 
 ## 5. Known gaps after stowing
 
-These are real, verified gaps. Fix or ignore, but do not expect them to work.
+This is a real, verified gap. Fix or ignore, but do not expect it to work.
 
 - **The generated colour files do not exist until you run the theme switcher.**
   None of them are tracked. Run this once, immediately after stowing:
