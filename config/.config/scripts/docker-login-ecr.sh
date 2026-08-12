@@ -1,4 +1,5 @@
-#/bin/sh
+#!/bin/sh
+
 aws_account="$(aws sts get-caller-identity --query Account --output text)"
 echo "${aws_account}"
 
