@@ -135,10 +135,10 @@ itself. Without it there is no `hyprland.portal` in
 never appears on the bus — `gtk.portal` does not implement ScreenCast at all,
 and `gnome.portal` does but is gated `UseIn=gnome`. The backend needs no
 configuration from this repo: `/usr/share/xdg-desktop-portal/hyprland-portals.conf`,
-shipped by the `hyprland` package, already declares `[preferred]
-default=hyprland;gtk`. Installing the backend mid-session is not enough on its
-own, since `xdg-desktop-portal` only scans for backends at startup; log out and
-back in, or restart the portal services:
+shipped by the `hyprland` package, already declares
+`[preferred] default=hyprland;gtk`. Installing the backend mid-session is not
+enough on its own, since `xdg-desktop-portal` only scans for backends at
+startup; log out and back in, or restart the portal services:
 
 ```sh
 systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
