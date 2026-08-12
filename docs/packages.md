@@ -23,7 +23,7 @@ Shared helpers that are not tied to one program.
 | File                                                                     | What it does                                                                                                                                                                         |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `scripts/term-startup.sh`                                                | Runs `figlet qdrtech` then `fastfetch`. Called from `zshrc/.zshrc:10`.                                                                                                               |
-| `scripts/import-gsettings.sh`                                            | Reads `gtk-3.0/settings.ini` and pushes theme/icon/cursor/font into `org.gnome.desktop.interface` via `gsettings`. Run on login from `hyprland/.config/hypr/conf/autostart.conf:11`. |
+| `scripts/import-gsettings.sh`                                            | Reads `gtk-3.0/settings.ini` and pushes theme/icon/cursor/font into `org.gnome.desktop.interface` via `gsettings`. Run on login from `hyprland/.config/hypr/conf/autostart.conf:8`.  |
 | `scripts/git-prune.sh`                                                   | `git fetch --prune`, then interactively deletes local branches whose upstream is gone. Aliased to `gitprune`.                                                                        |
 | `scripts/docker-login-ecr.sh`                                            | Work-specific AWS ECR login. Aliased to `dle`. Not generally useful.                                                                                                                 |
 | `scripts/wal`                                                            | A vendored copy of the pywal shell script (`wal`) by Dylan Araps. Requires ImageMagick's `convert`.                                                                                  |
@@ -102,7 +102,7 @@ Source order (`hyprland.conf:22-41`): `theme-colors.conf` (generated), then
 | `conf/workspace.conf`                         | Workspaces 1-4 pinned to `DP-1`, 5-8 to `DP-2`. Machine specific.                                                                                                                                                                   |
 | `conf/keybinding.conf`                        | `SUPER` is the modifier. `SUPER+Return` terminal, `SUPER+Space` launcher, `SUPER+C` kill, `SUPER+E` files, `SUPER+H/J/K/L` focus (mapped left/right/up/down in that order), `Home` / `Shift+Home` screenshot, `SUPER+Shift+L` lock. |
 | `conf/keyboard.conf`                          | US layout, `ctrl:nocaps`, natural scroll off.                                                                                                                                                                                       |
-| `conf/autostart.conf`                         | Runs `~/.config/hypr/scripts/xdg.sh` (**missing from this repo**), import-gsettings, Waybar launch, hypridle, `hyprshade auto`, nm-applet, hyprpaper, blueman-applet.                                                               |
+| `conf/autostart.conf`                         | Runs import-gsettings, Waybar launch, hypridle, `hyprshade auto`, nm-applet, hyprpaper, blueman-applet.                                                                                                                             |
 | `conf/theme.conf`                             | Styling only. Consumes `$bg $surface $surface_alt $fg $fg_muted $accent $accent_alt $warn $error $success` from the generated `theme-colors.conf`. Blur and shadow are off.                                                         |
 | `conf/window.conf`                            | dwindle layout, gaps 10/14, border 3. Its `general {}` block is overridden by `conf/theme.conf` because that is sourced later.                                                                                                      |
 | `conf/environment.conf`                       | Empty file.                                                                                                                                                                                                                         |
@@ -122,7 +122,7 @@ tracked here.
 **Target:** `~/.config/hyprshade`
 
 One schedule: `blue-light-filter` from 20:30 to 06:00. Started by
-`hyprland/.config/hypr/conf/autostart.conf:20` (`hyprshade auto`).
+`hyprland/.config/hypr/conf/autostart.conf:17` (`hyprshade auto`).
 
 ---
 
