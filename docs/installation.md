@@ -103,21 +103,47 @@ stow package at all. The one exception is the per-package file tables in
 | `Hyprland`, `hyprctl`               | `hyprland`               | the whole `hyprland` package                                                                                                  |
 | `hypridle`                          | `hypridle`               | `hyprland/.config/hypr/conf/autostart.conf`, `hyprland/.config/hypr/hypridle.conf`                                            |
 | `hyprlock`                          | `hyprlock`               | `hyprland/.config/hypr/conf/keybinding.conf:20`, `hyprland/.config/hypr/hyprlock.conf`, `hyprland/.config/hypr/hypridle.conf` |
-| `hyprpaper`                         | `hyprpaper`              | `hyprland/.config/hypr/conf/autostart.conf:23`, `hyprland/.config/hypr/scripts/hyprpaper.sh`                                  |
-| `hyprshade`                         | `hyprshade` (AUR)        | `hyprland/.config/hypr/conf/autostart.conf:20`, `hyprshade/.config/hyprshade/config.toml`                                     |
+| `hyprpaper`                         | `hyprpaper`              | `hyprland/.config/hypr/conf/autostart.conf:20`, `hyprland/.config/hypr/scripts/hyprpaper.sh`                                  |
+| `hyprshade`                         | `hyprshade` (AUR)        | `hyprland/.config/hypr/conf/autostart.conf:17`, `hyprshade/.config/hyprshade/config.toml`                                     |
 | `hyprshot`                          | `hyprshot` (AUR)         | `hyprland/.config/hypr/conf/keybinding.conf:18-19`                                                                            |
-| `waybar`                            | `waybar`                 | `hyprland/.config/hypr/conf/autostart.conf:14`, `waybar/.config/waybar/scripts/*`                                             |
+| `waybar`                            | `waybar`                 | `hyprland/.config/hypr/conf/autostart.conf:11`, `waybar/.config/waybar/scripts/*`                                             |
 | `rofi`                              | `rofi` / `rofi-wayland`  | `hyprland/.config/hypr/hyprland.conf:17` (`$menu = rofi -show drun`)                                                          |
 | `ghostty`                           | `ghostty`                | `hyprland/.config/hypr/hyprland.conf:15` (`$terminal`)                                                                        |
 | `nautilus`                          | `nautilus`               | `hyprland/.config/hypr/hyprland.conf:16` (`$fileManager`)                                                                     |
 | `swaync`, `swaync-client`           | `swaync`                 | `waybar/.config/waybar/config` notification module, `swaync/` package                                                         |
-| `nm-applet`                         | `network-manager-applet` | `hyprland/.config/hypr/conf/autostart.conf:23`                                                                                |
-| `blueman-applet`, `blueman-manager` | `blueman`                | `hyprland/.config/hypr/conf/autostart.conf:23`, `waybar/.config/waybar/config`                                                |
+| `nm-applet`                         | `network-manager-applet` | `hyprland/.config/hypr/conf/autostart.conf:20`                                                                                |
+| `blueman-applet`, `blueman-manager` | `blueman`                | `hyprland/.config/hypr/conf/autostart.conf:20`, `waybar/.config/waybar/config`                                                |
 | `wpctl`                             | `wireplumber`            | `hyprland/.config/hypr/conf/keybinding.conf:65-68` (volume keys)                                                              |
 | `brightnessctl`                     | `brightnessctl`          | `hyprland/.config/hypr/conf/keybinding.conf:69-70`                                                                            |
 | `playerctl`                         | `playerctl`              | `hyprland/.config/hypr/conf/keybinding.conf:73-76`                                                                            |
 | `gsettings`                         | `glib2`                  | `config/.config/scripts/import-gsettings.sh`                                                                                  |
 | `killall`                           | `psmisc`                 | `waybar/.config/waybar/scripts/launch.sh`, `hyprland/.config/hypr/scripts/hyprpaper.sh`                                       |
+| screen sharing (portal backend)     | `xdg-desktop-portal-hyprland` | nothing in this repo; required by the desktop for screen sharing, alongside `xdg-desktop-portal`                              |
+
+**Screen sharing needs `xdg-desktop-portal-hyprland`, and nothing in this repo.**
+Nothing here sets up XDG desktop portals, and nothing here needs to: the
+Hyprland binary exports the session environment itself, with a built-in call
+that is visible in `strings /usr/bin/Hyprland`:
+
+```
+systemctl --user import-environment DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP QT_QPA_PLATFORMTHEME PATH XDG_DATA_DIRS && … dbus-update-activation-environment --systemd …
+```
+
+What screen sharing does require is a portal
+_backend_: `xdg-desktop-portal-hyprland`, alongside `xdg-desktop-portal`
+itself. Without it there is no `hyprland.portal` in
+`/usr/share/xdg-desktop-portal/portals/` and `org.freedesktop.portal.ScreenCast`
+never appears on the bus — `gtk.portal` does not implement ScreenCast at all,
+and `gnome.portal` does but is gated `UseIn=gnome`. The backend needs no
+configuration from this repo: `/usr/share/xdg-desktop-portal/hyprland-portals.conf`,
+shipped by the `hyprland` package, already declares
+`[preferred] default=hyprland;gtk`. Installing the backend mid-session is not
+enough on its own, since `xdg-desktop-portal` only scans for backends at
+startup; log out and back in, or restart the portal services:
+
+```sh
+systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
+```
 
 ### Required by Waybar modules
 
@@ -160,7 +186,7 @@ or the setting silently falls back.
 
 ## 5. Known gaps after stowing
 
-These are real, verified gaps. Fix or ignore, but do not expect them to work.
+This is a real, verified gap. Fix or ignore, but do not expect it to work.
 
 - **The generated colour files do not exist until you run the theme switcher.**
   None of them are tracked. Run this once, immediately after stowing:
@@ -195,11 +221,6 @@ These are real, verified gaps. Fix or ignore, but do not expect them to work.
   - `ghostty/.config/ghostty/config` does `config-file = ?theme.conf`. The `?`
     marks the include optional, so with the file absent Ghostty starts on its
     built-in colours rather than failing; `ghostty +validate-config` exits 0.
-
-- **`~/.config/hypr/scripts/xdg.sh` does not exist.**
-  `hyprland/.config/hypr/conf/autostart.conf:8` runs it on every login. It was
-  never committed. Its stated job was XDG desktop portal setup for screen
-  sharing.
 
 No absolute path carrying a username is left in the tree, including symlink
 targets.
