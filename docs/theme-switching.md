@@ -20,8 +20,10 @@ switcher is run once:
   has never existed here. SwayNC comes up unstyled.
 - `~/.config/starship.toml` pointed into the deleted `default` theme, so it
   dangles and Starship falls back to its built-in prompt.
-- `~/.config/ghostty/theme.conf` is deleted. Nothing `include`s it, so nothing
-  changes visibly.
+- `~/.config/ghostty/theme.conf` is deleted. `ghostty/config` loads it with
+  `config-file = ?theme.conf`, and the `?` marks it optional, so Ghostty keeps
+  starting — it just falls back to its built-in colours until the switcher
+  writes the file again.
 
 **Do not run `ts` in a shell you already had open.** `ts` is a zsh alias, fixed
 at shell start; a shell that predates the change still holds the old
@@ -115,8 +117,14 @@ Generated colour files:
 | `~/.config/rofi/theme-colors.rasi` | imported by `generated-theme.rasi` |
 | `~/.config/rofi/generated-theme.rasi` | `rofi/config.rasi:9` `@theme "generated-theme.rasi"` |
 | `~/.config/swaync/theme-colors.css` | `swaync/style.css:1` `@import url("theme-colors.css")` |
-| `~/.config/ghostty/theme.conf` | nothing — `ghostty/config` does not `include` it |
+| `~/.config/ghostty/theme.conf` | `ghostty/config` `config-file = ?theme.conf` (optional; included files override the file that loads them, but see the runtime note below) |
 | `~/.config/starship.toml` | `starship init zsh` (`zshrc/.zshrc:29`) |
+
+Ghostty runtime note: the include only wins Ghostty's own config resolution.
+`zshrc/.zshrc:51-53` replays `~/.cache/wal/sequences` on every shell start and
+strips only OSC 11/17/19/708, so the surviving OSC 4;0-15, OSC 10 and OSC 12
+let pywal override the palette, foreground and cursor — 18 of the 21 values in
+`theme.conf`. Only background and the two `selection-*` values survive.
 
 After a successful `set`, Hyprland is reloaded via `hyprctl reload` and SwayNC
 via `swaync-client --reload-config --reload-css`, unless `--no-reload` is given.
