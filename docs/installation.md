@@ -118,6 +118,7 @@ stow package at all. The one exception is the per-package file tables in
 | `playerctl`                         | `playerctl`              | `hyprland/.config/hypr/conf/keybinding.conf:73-76`                                                                            |
 | `gsettings`                         | `glib2`                  | `config/.config/scripts/import-gsettings.sh`                                                                                  |
 | `killall`                           | `psmisc`                 | `waybar/.config/waybar/scripts/launch.sh`, `hyprland/.config/hypr/scripts/hyprpaper.sh`                                       |
+| screen sharing (portal backend)     | `xdg-desktop-portal-hyprland` | nothing in this repo; required by the desktop for screen sharing, alongside `xdg-desktop-portal`                              |
 
 **Screen sharing needs `xdg-desktop-portal-hyprland`, and nothing in this repo.**
 Nothing here sets up XDG desktop portals, and nothing here needs to: the
